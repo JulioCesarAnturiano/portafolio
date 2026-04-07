@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
@@ -6,73 +6,67 @@ import Skills from './components/sections/Skills'
 import Projects from './components/sections/Projects'
 import About from './components/sections/About'
 import Contact from './components/sections/Contact'
-import Skills3DCanvas from './components/skills/Skills3DCanvas'
+import PersistentKeyboard from './components/skills/PersistentKeyboard'
 import { skills } from './data/skills'
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero')
+  const sectionsRef = useRef({})
 
-  // Track active section for keyboard visibility
+  // Track active section with improved scroll detection
   useEffect(() => {
     const sections = ['hero', 'skills', 'projects', 'about', 'contact']
     
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 3
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            if (activeSection !== sectionId) {
+              setActiveSection(sectionId)
+            }
+            break
           }
-        })
-      },
-      { threshold: 0.3 }
-    )
+        }
+      }
+    }
 
-    sections.forEach((id) => {
-      const element = document.getElementById(id)
-      if (element) observer.observe(element)
-    })
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Initial check
 
-    return () => observer.disconnect()
-  }, [])
-
-  const isSkillsActive = activeSection === 'skills'
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [activeSection])
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Fixed 3D Keyboard Background */}
-      <div 
-        className="fixed inset-0 transition-opacity duration-700"
-        style={{
-          opacity: isSkillsActive ? 1 : 0.3,
-          zIndex: isSkillsActive ? 15 : 0,
-          pointerEvents: isSkillsActive ? 'auto' : 'none',
-        }}
-      >
-        <Skills3DCanvas skills={skills} />
-      </div>
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      {/* PERSISTENT 3D KEYBOARD - Always visible, transforms per section */}
+      <PersistentKeyboard skills={skills} activeSection={activeSection} />
 
-      {/* Very subtle gradient overlay */}
+      {/* Dark overlay that adjusts per section */}
       <div 
-        className="fixed inset-0 pointer-events-none transition-opacity duration-500"
+        className="fixed inset-0 pointer-events-none transition-all duration-1000"
         style={{
-          zIndex: isSkillsActive ? 14 : 1,
-          background: isSkillsActive 
-            ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)'
-            : 'radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.85) 100%)',
+          zIndex: 2,
+          background: activeSection === 'skills' 
+            ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.2) 100%)'
+            : 'radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
         }}
       />
       
       {/* Navbar - always on top */}
-      <div className="relative" style={{ zIndex: 20 }}>
+      <div className="relative" style={{ zIndex: 50 }}>
         <Navbar />
       </div>
 
-      {/* Content - below canvas when skills active */}
+      {/* Main content - layered above keyboard when not in skills */}
       <div 
-        className="relative transition-all duration-300"
+        className="relative transition-all duration-500"
         style={{ 
-          zIndex: isSkillsActive ? 5 : 10,
-          pointerEvents: isSkillsActive ? 'none' : 'auto',
+          zIndex: activeSection === 'skills' ? 3 : 10,
+          pointerEvents: activeSection === 'skills' ? 'none' : 'auto',
         }}
       >
         <main>
