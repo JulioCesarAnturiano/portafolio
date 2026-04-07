@@ -2,7 +2,16 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Mail, MapPin, Github, Linkedin, Twitter } from 'lucide-react'
 import { personalInfo } from '../../data/personal'
-import SectionTitle from '../ui/SectionTitle'
+import { 
+  sectionReveal, 
+  fadeUp, 
+  slideFromLeft, 
+  slideFromRight,
+  staggerContainer,
+  staggerItem,
+  viewportSettings,
+  easings 
+} from '../../hooks/animations'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -55,27 +64,60 @@ const Contact = () => {
   ]
 
   return (
-    <section id="contact" className="relative py-20">
+    <section id="contact" className="relative py-20 overflow-hidden">
       {/* Background overlay */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      <motion.div 
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      />
 
       <div className="container-custom relative z-10">
-        <SectionTitle
-          title="Contacto"
-          subtitle="¿Tienes un proyecto en mente?"
-          description="Estoy disponible para proyectos freelance y oportunidades laborales."
-        />
+        {/* Section Title */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={sectionReveal}
+          className="text-center mb-16"
+        >
+          <motion.span 
+            variants={fadeUp}
+            className="inline-block text-primary-400 text-sm font-medium tracking-widest uppercase mb-4"
+          >
+            ¿Tienes un proyecto en mente?
+          </motion.span>
+          <motion.h2 
+            variants={fadeUp}
+            className="text-3xl md:text-5xl font-bold text-white mb-4"
+          >
+            Contacto
+          </motion.h2>
+          <motion.p 
+            variants={fadeUp}
+            className="text-white/50 max-w-xl mx-auto"
+          >
+            Estoy disponible para proyectos freelance y oportunidades laborales.
+          </motion.p>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left column - Contact info */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportSettings}
+            variants={slideFromLeft}
             className="space-y-8"
           >
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: easings.smoothOut }}
+            >
               <h3 className="text-2xl font-bold text-white mb-4">
                 Trabajemos juntos
               </h3>
@@ -83,31 +125,40 @@ const Contact = () => {
                 Si tienes un proyecto interesante o simplemente quieres charlar sobre tecnología, 
                 no dudes en contactarme.
               </p>
-            </div>
+            </motion.div>
 
             {/* Contact info cards */}
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
+            <motion.div 
+              className="space-y-4"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {contactInfo.map((info) => (
                 <motion.div
                   key={info.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  variants={staggerItem}
                 >
                   {info.href ? (
-                    <a
+                    <motion.a
                       href={info.href}
-                      className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-all group"
+                      className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-colors duration-300 group"
+                      whileHover={{ y: -4, scale: 1.01 }}
+                      transition={{ duration: 0.3, ease: easings.smoothOut }}
                     >
-                      <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <motion.div 
+                        className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.3 }}
+                      >
                         <info.icon className="w-5 h-5 text-white" />
-                      </div>
+                      </motion.div>
                       <div>
                         <div className="text-white/40 text-sm">{info.label}</div>
                         <div className="text-white font-medium">{info.value}</div>
                       </div>
-                    </a>
+                    </motion.a>
                   ) : (
                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
                       <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
@@ -121,25 +172,29 @@ const Contact = () => {
                   )}
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Social links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: easings.smoothOut }}
             >
               <h4 className="text-white font-semibold mb-4">Sígueme en redes</h4>
               <div className="flex gap-3">
-                {socialLinks.map((social) => (
+                {socialLinks.map((social, index) => (
                   <motion.a
                     key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-white/5 text-white/60 hover:text-white hover:bg-white/10 rounded-xl border border-white/10 transition-all"
-                    whileHover={{ scale: 1.1, y: -2 }}
+                    className="p-3 bg-white/5 text-white/60 hover:text-white hover:bg-white/10 rounded-xl border border-white/10 hover:border-white/20 transition-colors duration-300"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + index * 0.1, duration: 0.4, ease: easings.smoothOut }}
+                    whileHover={{ scale: 1.1, y: -3 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label={social.label}
                   >
@@ -152,69 +207,80 @@ const Contact = () => {
 
           {/* Right column - Contact form */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportSettings}
+            variants={slideFromRight}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <motion.form 
+              onSubmit={handleSubmit} 
+              className="space-y-6"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
               {/* Name field */}
-              <div>
+              <motion.div variants={staggerItem}>
                 <label htmlFor="name" className="block text-white font-medium mb-2">
                   Nombre
                 </label>
-                <input
+                <motion.input
                   type="text"
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all duration-300"
                   placeholder="Tu nombre"
+                  whileFocus={{ scale: 1.01 }}
                 />
-              </div>
+              </motion.div>
 
               {/* Email field */}
-              <div>
+              <motion.div variants={staggerItem}>
                 <label htmlFor="email" className="block text-white font-medium mb-2">
                   Email
                 </label>
-                <input
+                <motion.input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all duration-300"
                   placeholder="tu@email.com"
+                  whileFocus={{ scale: 1.01 }}
                 />
-              </div>
+              </motion.div>
 
               {/* Message field */}
-              <div>
+              <motion.div variants={staggerItem}>
                 <label htmlFor="message" className="block text-white font-medium mb-2">
                   Mensaje
                 </label>
-                <textarea
+                <motion.textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all resize-none"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all duration-300 resize-none"
                   placeholder="Cuéntame sobre tu proyecto..."
+                  whileFocus={{ scale: 1.01 }}
                 />
-              </div>
+              </motion.div>
 
               {/* Submit button */}
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-white text-black font-semibold rounded-xl hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-white text-black font-semibold rounded-xl hover:bg-white/90 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                variants={staggerItem}
+                whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
               >
                 {isSubmitting ? (
@@ -236,14 +302,16 @@ const Contact = () => {
               {/* Success message */}
               {submitted && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: easings.smoothOut }}
                   className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-center"
                 >
                   ¡Mensaje enviado con éxito! Te responderé pronto.
                 </motion.div>
               )}
-            </form>
+            </motion.form>
           </motion.div>
         </div>
       </div>

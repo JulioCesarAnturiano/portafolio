@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { RoundedBox, Html } from '@react-three/drei'
-import { Suspense, useRef, useMemo, useState, useCallback } from 'react'
+import { Suspense, useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import * as THREE from 'three'
 
 // Colores característicos por tecnología
@@ -46,6 +46,7 @@ const techIcons = {
 const SkillCube = ({ skill, position, index, onHover, onUnhover, onClick, mousePosition }) => {
   const groupRef = useRef()
   const glowRef = useRef()
+  const meshRef = useRef()
   
   const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
@@ -146,25 +147,33 @@ const SkillCube = ({ skill, position, index, onHover, onUnhover, onClick, mouseP
     }
   })
 
-  const handlePointerEnter = useCallback((e) => {
+  const handlePointerOver = useCallback((e) => {
     e.stopPropagation()
     setHovered(true)
     document.body.style.cursor = 'pointer'
     onHover?.(skill)
   }, [skill, onHover])
 
-  const handlePointerLeave = useCallback(() => {
+  const handlePointerOut = useCallback((e) => {
+    e.stopPropagation()
     setHovered(false)
     setPressed(false)
     document.body.style.cursor = 'default'
     onUnhover?.()
   }, [onUnhover])
 
-  const handlePointerDown = useCallback(() => setPressed(true), [])
-  const handlePointerUp = useCallback(() => setPressed(false), [])
+  const handlePointerDown = useCallback((e) => {
+    e.stopPropagation()
+    setPressed(true)
+  }, [])
+  
+  const handlePointerUp = useCallback((e) => {
+    e.stopPropagation()
+    setPressed(false)
+  }, [])
 
-  const handleClick = useCallback(() => {
-    console.log(`Clicked: ${skill.name}`, skill)
+  const handleClick = useCallback((e) => {
+    e.stopPropagation()
     onClick?.(skill)
   }, [skill, onClick])
 
@@ -172,12 +181,20 @@ const SkillCube = ({ skill, position, index, onHover, onUnhover, onClick, mouseP
     <group
       ref={groupRef}
       position={position}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onClick={handleClick}
     >
+      {/* Invisible hit area - larger for easier interaction */}
+      <mesh
+        ref={meshRef}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onClick={handleClick}
+      >
+        <boxGeometry args={[1.2, 1.2, 1.2]} />
+        <meshBasicMaterial visible={false} />
+      </mesh>
+
       {/* Key socket/well */}
       <RoundedBox args={[1.08, 0.6, 1.08]} radius={0.1} smoothness={4} position={[0, -0.3, 0]}>
         <meshStandardMaterial color="#0a0a0a" roughness={0.95} metalness={0} />
@@ -205,14 +222,21 @@ const SkillCube = ({ skill, position, index, onHover, onUnhover, onClick, mouseP
         />
       </RoundedBox>
 
-      {/* Icon */}
-      <Html position={[0, 0.85, 0]} center distanceFactor={8} style={{ pointerEvents: 'none', userSelect: 'none' }}>
+      {/* Icon - pointer-events none */}
+      <Html 
+        position={[0, 0.85, 0]} 
+        center 
+        distanceFactor={8} 
+        style={{ pointerEvents: 'none', userSelect: 'none' }}
+        zIndexRange={[0, 0]}
+      >
         <div style={{
           fontSize: icon.length > 2 ? '14px' : '22px',
           fontWeight: 'bold',
           color: '#fff',
           textShadow: `0 2px 8px ${colors.glow}`,
           opacity: 0.95,
+          pointerEvents: 'none',
         }}>
           {icon}
         </div>
@@ -264,7 +288,7 @@ const useMousePosition = () => {
   return smoothPos.current
 }
 
-const Skills3DScene = ({ skills, onSkillHover, onSkillClick }) => {
+const Skills3DScene = ({ skills, onSkillHover, onSkillUnhover, onSkillClick }) => {
   const groupRef = useRef()
   const mousePos = useMousePosition()
 
@@ -325,6 +349,7 @@ const Skills3DScene = ({ skills, onSkillHover, onSkillClick }) => {
               position={positions[index] || [0, 0, 0]}
               index={index}
               onHover={onSkillHover}
+              onUnhover={onSkillUnhover}
               onClick={onSkillClick}
               mousePosition={mousePos}
             />
@@ -358,13 +383,19 @@ const Skills3DCanvas = ({ skills }) => {
           camera={{ position: [-5, 9, 12], fov: 32 }}
           dpr={[1, 2]}
           gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}
-          raycaster={{ params: { Line: { threshold: 0.15 } } }}
           style={{ touchAction: 'none' }}
+          eventSource={document.documentElement}
+          eventPrefix="client"
         >
           <color attach="background" args={['#000000']} />
           <fog attach="fog" args={['#000000', 20, 40]} />
           <Suspense fallback={<Loader />}>
-            <Skills3DScene skills={skills} onSkillHover={setHoveredSkill} onSkillClick={setClickedSkill} />
+            <Skills3DScene 
+              skills={skills} 
+              onSkillHover={setHoveredSkill} 
+              onSkillUnhover={() => setHoveredSkill(null)}
+              onSkillClick={setClickedSkill} 
+            />
           </Suspense>
         </Canvas>
       </div>

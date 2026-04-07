@@ -44,7 +44,7 @@ function App() {
         className="fixed inset-0 transition-opacity duration-700"
         style={{
           opacity: isSkillsActive ? 1 : 0.3,
-          zIndex: isSkillsActive ? 5 : 0,
+          zIndex: isSkillsActive ? 15 : 0,
           pointerEvents: isSkillsActive ? 'auto' : 'none',
         }}
       >
@@ -55,16 +55,26 @@ function App() {
       <div 
         className="fixed inset-0 pointer-events-none transition-opacity duration-500"
         style={{
-          zIndex: isSkillsActive ? 4 : 1,
+          zIndex: isSkillsActive ? 14 : 1,
           background: isSkillsActive 
             ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)'
             : 'radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.85) 100%)',
         }}
       />
       
-      {/* Content */}
-      <div className="relative z-10">
+      {/* Navbar - always on top */}
+      <div className="relative" style={{ zIndex: 20 }}>
         <Navbar />
+      </div>
+
+      {/* Content - below canvas when skills active */}
+      <div 
+        className="relative transition-all duration-300"
+        style={{ 
+          zIndex: isSkillsActive ? 5 : 10,
+          pointerEvents: isSkillsActive ? 'none' : 'auto',
+        }}
+      >
         <main>
           <Hero />
           <Skills />
