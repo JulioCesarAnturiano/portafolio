@@ -3,7 +3,47 @@ import { motion } from 'framer-motion'
 import { Send, Mail, MapPin, Github, Linkedin, Twitter } from 'lucide-react'
 import { personalInfo } from '../../data/personal'
 
-const Contact = () => {
+const copy = {
+  es: {
+    intro: '¿Tienes un proyecto?',
+    title: 'Contacto',
+    subtitle: 'Estoy disponible para proyectos freelance y oportunidades laborales.',
+    workTogether: 'Trabajemos juntos',
+    paragraph: 'Si tienes un proyecto interesante o simplemente quieres charlar, no dudes en contactarme.',
+    location: 'Ubicación',
+    follow: 'Sígueme en redes',
+    name: 'Nombre',
+    email: 'Email',
+    message: 'Mensaje',
+    yourName: 'Tu nombre',
+    yourEmail: 'tu@email.com',
+    yourMessage: 'Cuéntame sobre tu proyecto...',
+    sending: 'Enviando...',
+    send: 'Enviar mensaje',
+    success: '¡Mensaje enviado con éxito! Te responderé pronto.',
+  },
+  en: {
+    intro: 'Do you have a project?',
+    title: 'Contact',
+    subtitle: 'I am available for freelance projects and job opportunities.',
+    workTogether: 'Let’s work together',
+    paragraph: 'If you have an interesting project or just want to chat, feel free to contact me.',
+    location: 'Location',
+    follow: 'Follow me',
+    name: 'Name',
+    email: 'Email',
+    message: 'Message',
+    yourName: 'Your name',
+    yourEmail: 'you@email.com',
+    yourMessage: 'Tell me about your project...',
+    sending: 'Sending...',
+    send: 'Send message',
+    success: 'Message sent successfully! I will get back to you soon.',
+  },
+}
+
+const Contact = ({ lang = 'es' }) => {
+  const t = copy[lang] || copy.es
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -24,7 +64,7 @@ const Contact = () => {
 
   const contactInfo = [
     { icon: Mail, label: "Email", value: personalInfo.email, href: `mailto:${personalInfo.email}` },
-    { icon: MapPin, label: "Ubicación", value: personalInfo.location, href: null }
+    { icon: MapPin, label: t.location, value: personalInfo.location, href: null }
   ]
 
   const socialLinks = [
@@ -50,13 +90,13 @@ const Contact = () => {
             <motion.span 
               className="inline-block text-primary-400 text-sm font-medium tracking-widest uppercase mb-4"
             >
-              ¿Tienes un proyecto?
+              {t.intro}
             </motion.span>
             <motion.h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              Contacto
+              {t.title}
             </motion.h2>
             <motion.p className="text-white/50 max-w-xl mx-auto">
-              Estoy disponible para proyectos freelance y oportunidades laborales.
+              {t.subtitle}
             </motion.p>
           </motion.div>
 
@@ -70,9 +110,9 @@ const Contact = () => {
               className="space-y-6"
             >
               <div>
-                <h3 className="text-xl font-bold text-white mb-3">Trabajemos juntos</h3>
+                <h3 className="text-xl font-bold text-white mb-3">{t.workTogether}</h3>
                 <p className="text-white/50 leading-relaxed text-sm">
-                  Si tienes un proyecto interesante o simplemente quieres charlar, no dudes en contactarme.
+                  {t.paragraph}
                 </p>
               </div>
 
@@ -122,7 +162,7 @@ const Contact = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <h4 className="text-white font-semibold mb-3 text-sm">Sígueme en redes</h4>
+                <h4 className="text-white font-semibold mb-3 text-sm">{t.follow}</h4>
                 <div className="flex gap-2">
                   {socialLinks.map((social, index) => (
                     <motion.a
@@ -151,7 +191,7 @@ const Contact = () => {
             >
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-white font-medium mb-1.5 text-sm">Nombre</label>
+                  <label htmlFor="name" className="block text-white font-medium mb-1.5 text-sm">{t.name}</label>
                   <input
                     type="text"
                     id="name"
@@ -160,12 +200,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all text-sm"
-                    placeholder="Tu nombre"
+                    placeholder={t.yourName}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-white font-medium mb-1.5 text-sm">Email</label>
+                  <label htmlFor="email" className="block text-white font-medium mb-1.5 text-sm">{t.email}</label>
                   <input
                     type="email"
                     id="email"
@@ -174,12 +214,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all text-sm"
-                    placeholder="tu@email.com"
+                    placeholder={t.yourEmail}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-white font-medium mb-1.5 text-sm">Mensaje</label>
+                  <label htmlFor="message" className="block text-white font-medium mb-1.5 text-sm">{t.message}</label>
                   <textarea
                     id="message"
                     name="message"
@@ -188,7 +228,7 @@ const Contact = () => {
                     required
                     rows={4}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition-all resize-none text-sm"
-                    placeholder="Cuéntame sobre tu proyecto..."
+                    placeholder={t.yourMessage}
                   />
                 </div>
 
@@ -205,12 +245,12 @@ const Contact = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      Enviando...
+                      {t.sending}
                     </>
                   ) : (
                     <>
                       <Send size={18} />
-                      Enviar mensaje
+                      {t.send}
                     </>
                   )}
                 </motion.button>
@@ -221,7 +261,7 @@ const Contact = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="p-3 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-center text-sm"
                   >
-                    ¡Mensaje enviado con éxito! Te responderé pronto.
+                    {t.success}
                   </motion.div>
                 )}
               </form>

@@ -8,10 +8,12 @@ import About from './components/sections/About'
 import Contact from './components/sections/Contact'
 import PersistentKeyboard from './components/skills/PersistentKeyboard'
 import { skills } from './data/skills'
+import { personalInfo } from './data/personal'
 import { useFullPageScroll } from './hooks/useFullPageScroll'
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero')
+  const [lang, setLang] = useState('es')
   const sections = ['hero', 'skills', 'projects', 'about', 'contact']
   
   // Full page scroll like slideshow
@@ -60,7 +62,7 @@ function App() {
       
       {/* Navbar - always on top */}
       <div className="relative" style={{ zIndex: 50 }}>
-        <Navbar />
+        <Navbar lang={lang} onLanguageChange={setLang} />
       </div>
 
       {/* Main content - layered above keyboard when not in skills */}
@@ -72,13 +74,13 @@ function App() {
         }}
       >
         <main>
-          <Hero />
-          <Skills />
-          <Projects />
-          <About />
-          <Contact />
+          <Hero lang={lang} />
+          <Skills lang={lang} />
+          <Projects lang={lang} githubUrl={personalInfo.social.github} />
+          <About lang={lang} />
+          <Contact lang={lang} />
         </main>
-        <Footer />
+        <Footer lang={lang} />
       </div>
     </div>
   )

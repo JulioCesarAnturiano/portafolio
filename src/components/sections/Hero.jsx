@@ -2,9 +2,33 @@ import { motion } from 'framer-motion'
 import { ArrowRight, ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
 import { personalInfo } from '../../data/personal'
 
-const Hero = () => {
+const copy = {
+  es: {
+    hello: 'Hola, soy ',
+    availability: 'Disponible para pasantías y proyectos freelance',
+    title: 'Desarrollador Full-Stack e Ingeniero de Software',
+    subtitle: 'Construyendo sistemas productivos y soluciones de programación competitiva',
+    description: 'Estudiante de tercer año de Ingeniería Informática en la UMSS con experiencia desplegando sistemas críticos para instituciones públicas. Competidor ICPC con bases sólidas en algoritmos, estructuras de datos y arquitectura de software.',
+    projects: 'Ver proyectos',
+    contact: 'Contactarme',
+    scroll: 'Scroll',
+  },
+  en: {
+    hello: 'Hi, I am ',
+    availability: personalInfo.availability,
+    title: personalInfo.title,
+    subtitle: personalInfo.subtitle,
+    description: personalInfo.description,
+    projects: 'View projects',
+    contact: 'Contact me',
+    scroll: 'Scroll',
+  },
+}
+
+const Hero = ({ lang = 'es' }) => {
+  const t = copy[lang] || copy.es
   return (
-    <section id="hero" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id="hero" className="relative min-h-[108vh] flex items-center pt-20 pb-12 overflow-hidden">
       <div className="container-custom relative z-10">
         {/* Left-aligned content to leave space for keyboard on right */}
         <motion.div 
@@ -21,7 +45,7 @@ const Hero = () => {
             className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/80 text-sm font-medium mb-8 backdrop-blur-sm"
           >
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            {personalInfo.availability}
+            {t.availability}
           </motion.div>
 
           {/* Main heading */}
@@ -31,7 +55,7 @@ const Hero = () => {
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
           >
-            <span className="text-white">Hola, soy </span>
+            <span className="text-white">{t.hello}</span>
             <span className="text-gradient">{personalInfo.name}</span>
           </motion.h1>
 
@@ -43,10 +67,10 @@ const Hero = () => {
             className="mb-6"
           >
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white/80 mb-2">
-              {personalInfo.title}
+              {t.title}
             </h2>
             <p className="text-lg md:text-xl text-primary-400 font-medium">
-              {personalInfo.subtitle}
+              {t.subtitle}
             </p>
           </motion.div>
 
@@ -57,7 +81,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-white/50 text-lg max-w-xl mb-10 leading-relaxed"
           >
-            {personalInfo.description}
+            {t.description}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -73,7 +97,7 @@ const Hero = () => {
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
-              Ver proyectos
+              {t.projects}
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </motion.a>
             
@@ -83,7 +107,7 @@ const Hero = () => {
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
-              Contactarme
+              {t.contact}
             </motion.a>
           </motion.div>
 
@@ -112,6 +136,7 @@ const Hero = () => {
               </motion.a>
             ))}
           </motion.div>
+
         </motion.div>
 
         {/* Scroll indicator */}
@@ -125,7 +150,7 @@ const Hero = () => {
             href="#skills"
             className="flex flex-col items-center gap-2 text-white/40 hover:text-white/60 transition-colors cursor-pointer"
           >
-            <span className="text-xs uppercase tracking-widest">Scroll</span>
+            <span className="text-xs uppercase tracking-widest">{t.scroll}</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}

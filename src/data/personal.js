@@ -43,10 +43,19 @@ export const personalInfo = {
 }
 
 // Navegación
-export const navLinks = [
-  { name: "Inicio", href: "#hero" },
-  { name: "Skills", href: "#skills" },
-  { name: "Proyectos", href: "#projects" },
-  { name: "Sobre mí", href: "#about" },
-  { name: "Contacto", href: "#contact" },
-]
+export const navLinks = {
+  es: [
+    { name: "Inicio", href: "#hero" },
+    { name: "Skills", href: "#skills" },
+    { name: "Proyectos", href: "#projects" },
+    { name: "Sobre mí", href: "#about" },
+    { name: "Contacto", href: "#contact" },
+  ],
+  en: [
+    { name: "Home", href: "#hero" },
+    { name: "Skills", href: "#skills" },
+    { name: "Projects", href: "#projects" },
+    { name: "About", href: "#about" },
+    { name: "Contact", href: "#contact" },
+  ],
+}

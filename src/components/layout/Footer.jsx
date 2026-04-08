@@ -9,7 +9,13 @@ const socialIcons = {
   instagram: Instagram,
 }
 
-const Footer = () => {
+const copy = {
+  es: { rights: 'Todos los derechos reservados.', madeWith: 'Hecho con', andCoffee: 'y mucho ☕' },
+  en: { rights: 'All rights reserved.', madeWith: 'Made with', andCoffee: 'and lots of ☕' },
+}
+
+const Footer = ({ lang = 'es' }) => {
+  const t = copy[lang] || copy.es
   const currentYear = new Date().getFullYear()
 
   return (
@@ -27,7 +33,7 @@ const Footer = () => {
               <span className="text-primary-500">.</span>
             </motion.a>
             <p className="text-white/40 text-sm">
-              © {currentYear} {personalInfo.name}. Todos los derechos reservados.
+              © {currentYear} {personalInfo.name}. {t.rights}
             </p>
           </div>
 
@@ -55,14 +61,14 @@ const Footer = () => {
 
           {/* Made with love */}
           <div className="flex items-center gap-2 text-white/40 text-sm">
-            <span>Hecho con</span>
+            <span>{t.madeWith}</span>
             <motion.span
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             >
               <Heart size={16} className="text-red-500 fill-red-500" />
             </motion.span>
-            <span>y mucho ☕</span>
+            <span>{t.andCoffee}</span>
           </div>
         </div>
 

@@ -633,7 +633,7 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          opacity: 1,
+          opacity: 0.9,
           backgroundImage: `
             radial-gradient(circle at 12% 22%, rgba(255,255,255,0.92) 1px, transparent 2px),
             radial-gradient(circle at 74% 31%, rgba(255,255,255,0.62) 1px, transparent 2px),
@@ -652,6 +652,7 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
         dpr={[1, 2]}
         gl={{
           antialias: true,
+          alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
@@ -659,7 +660,6 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
         eventSource={document.documentElement}
         eventPrefix="client"
       >
-        <color attach="background" args={['#000000']} />
         {/* Fog disabled to keep keyboard sharp in all sections */}
         <Suspense fallback={<Loader />}>
           <KeyboardScene
@@ -670,6 +670,21 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
           />
         </Suspense>
       </Canvas>
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          zIndex: 0,
+          opacity: 0,
+          backgroundImage: `
+            radial-gradient(circle at 12% 22%, rgba(255,255,255,0.92) 1px, transparent 2px),
+            radial-gradient(circle at 74% 31%, rgba(255,255,255,0.62) 1px, transparent 2px),
+            radial-gradient(circle at 43% 64%, rgba(255,255,255,0.82) 1px, transparent 2px),
+            radial-gradient(circle at 86% 14%, rgba(255,255,255,0.72) 1px, transparent 2px),
+            radial-gradient(circle at 28% 78%, rgba(255,255,255,0.72) 1px, transparent 2px),
+            radial-gradient(circle at 92% 82%, rgba(255,255,255,0.56) 1px, transparent 2px)
+          `,
+        }}
+      />
 
       {/* Trading Card Style - Yu-Gi-Oh Format */}
       {activeSection === 'skills' && hoveredSkill && (
@@ -744,8 +759,8 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
                 fontSize: '15px',
                 padding: '4px 12px',
                 color: '#000',
-                background: '#ef5a36',
-                boxShadow: '0 0 14px rgba(239,90,54,0.65)',
+                background: '#ffffff',
+                boxShadow: '0 0 14px rgba(255,255,255,0.65)',
               }}
             >
               LV {hoveredSkill.level}

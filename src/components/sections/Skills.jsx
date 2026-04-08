@@ -1,6 +1,12 @@
 import { motion } from 'framer-motion'
 
-const Skills = () => {
+const copy = {
+  es: { stack: 'Mi stack tecnológico', subtitle: 'Interactúa con el teclado para explorar mis habilidades' },
+  en: { stack: 'My tech stack', subtitle: 'Interact with the keyboard to explore my skills' },
+}
+
+const Skills = ({ lang = 'es' }) => {
+  const t = copy[lang] || copy.es
   return (
     <section id="skills" className="min-h-screen relative flex flex-col items-center justify-center py-20">
       {/* Title overlay - centered, non-blocking */}
@@ -19,7 +25,7 @@ const Skills = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Mi stack tecnológico
+            {t.stack}
           </motion.span>
           <motion.h2 
             className="text-4xl md:text-6xl font-bold text-white mb-4"
@@ -37,7 +43,7 @@ const Skills = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Interactúa con el teclado para explorar mis habilidades
+            {t.subtitle}
           </motion.p>
         </div>
       </motion.div>

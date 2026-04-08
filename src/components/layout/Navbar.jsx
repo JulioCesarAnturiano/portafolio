@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, FileText } from 'lucide-react'
 import { navLinks, personalInfo } from '../../data/personal'
 
-const Navbar = () => {
+const labels = {
+  es: { contact: 'Contáctame', cv: 'CV' },
+  en: { contact: 'Contact me', cv: 'CV' },
+}
+
+const Navbar = ({ lang = 'es', onLanguageChange }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const links = navLinks[lang] || navLinks.es
+  const t = labels[lang] || labels.es
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +48,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link, index) => (
+            {links.map((link, index) => (
               <motion.a
                 key={link.name}
                 href={link.href}
@@ -54,6 +61,18 @@ const Navbar = () => {
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300" />
               </motion.a>
             ))}
+            <motion.a
+              href="/CV/cv_julio_academic_FINAL_CLEAN.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors inline-flex items-center gap-1"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+            >
+              <FileText size={16} />
+              {t.cv}
+            </motion.a>
           </div>
 
           {/* CTA Button - Desktop */}
@@ -66,8 +85,23 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            Contáctame
+            {t.contact}
           </motion.a>
+
+          <div className="hidden md:flex items-center gap-1 ml-3">
+            {['es', 'en'].map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => onLanguageChange?.(code)}
+                className={`px-2.5 py-1 rounded-md text-xs uppercase border transition-colors ${
+                  lang === code ? 'bg-white text-black border-white' : 'text-white/70 border-white/20 hover:text-white'
+                }`}
+              >
+                {code}
+              </button>
+            ))}
+          </div>
 
           {/* Mobile Menu Button */}
           <motion.button
@@ -90,7 +124,7 @@ const Navbar = () => {
               className="md:hidden overflow-hidden bg-[#080511]/95 backdrop-blur-xl rounded-2xl mt-2 border border-white/10"
             >
               <div className="py-4 px-4 space-y-1">
-                {navLinks.map((link, index) => (
+                {links.map((link, index) => (
                   <motion.a
                     key={link.name}
                     href={link.href}
@@ -104,6 +138,21 @@ const Navbar = () => {
                   </motion.a>
                 ))}
                 <motion.a
+                  href="/CV/cv_julio_academic_FINAL_CLEAN.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.25 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <FileText size={16} />
+                    {t.cv}
+                  </span>
+                </motion.a>
+                <motion.a
                   href="#contact"
                   className="block mt-4 px-4 py-3 bg-white text-black text-center font-semibold rounded-lg"
                   initial={{ opacity: 0 }}
@@ -111,8 +160,22 @@ const Navbar = () => {
                   transition={{ delay: 0.3 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Contáctame
+                  {t.contact}
                 </motion.a>
+                <div className="mt-3 flex gap-2 px-1">
+                  {['es', 'en'].map((code) => (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => onLanguageChange?.(code)}
+                      className={`px-3 py-2 rounded-md text-xs uppercase border ${
+                        lang === code ? 'bg-white text-black border-white' : 'text-white/70 border-white/20'
+                      }`}
+                    >
+                      {code}
+                    </button>
+                  ))}
+                </div>
               </div>
             </motion.div>
           )}

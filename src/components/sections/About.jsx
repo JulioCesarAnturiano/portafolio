@@ -2,12 +2,35 @@ import { motion } from 'framer-motion'
 import { Code, Sparkles, Zap, Coffee } from 'lucide-react'
 import { personalInfo } from '../../data/personal'
 
-const About = () => {
-  const features = [
-    { icon: Code, title: "Código Limpio", description: "Escribo código mantenible, escalable y bien documentado." },
-    { icon: Sparkles, title: "UI/UX Moderno", description: "Creo interfaces intuitivas y atractivas." },
-    { icon: Zap, title: "Alto Rendimiento", description: "Optimizo aplicaciones para máxima velocidad." },
-    { icon: Coffee, title: "Dedicación Total", description: "Me comprometo al 100% con cada proyecto." }
+const copy = {
+  es: {
+    intro: 'Conóceme',
+    title: 'Sobre Mí',
+    features: [
+      { icon: Code, title: 'Código Limpio', description: 'Escribo código mantenible, escalable y bien documentado.' },
+      { icon: Sparkles, title: 'UI/UX Moderno', description: 'Creo interfaces intuitivas y atractivas.' },
+      { icon: Zap, title: 'Alto Rendimiento', description: 'Optimizo aplicaciones para máxima velocidad.' },
+      { icon: Coffee, title: 'Dedicación Total', description: 'Me comprometo al 100% con cada proyecto.' },
+    ],
+  },
+  en: {
+    intro: 'Get to know me',
+    title: 'About Me',
+    features: [
+      { icon: Code, title: 'Clean Code', description: 'I write maintainable, scalable and well-documented code.' },
+      { icon: Sparkles, title: 'Modern UI/UX', description: 'I create intuitive and attractive interfaces.' },
+      { icon: Zap, title: 'High Performance', description: 'I optimize apps for maximum speed.' },
+      { icon: Coffee, title: 'Full Commitment', description: 'I give 100% to every project.' },
+    ],
+  },
+}
+
+const About = ({ lang = 'es' }) => {
+  const t = copy[lang] || copy.es
+  const paragraphs = lang === 'en' ? personalInfo.about.paragraphs : [
+    'Soy estudiante de tercer año de Ingeniería Informática en la UMSS con experiencia real desplegando sistemas productivos para instituciones públicas. Como competidor ICPC, tengo bases sólidas en algoritmos, estructuras de datos y resolución de problemas bajo presión.',
+    'Me apasiona construir aplicaciones full-stack escalables que resuelvan problemas reales. He trabajado en sistemas críticos como plataformas electorales, apps municipales de transporte y herramientas de captura de movimiento 3D.',
+    'Además de programar, me interesa la Inteligencia Artificial, la programación competitiva y los gráficos por computadora. Me gusta explorar tecnologías de punta y crear soluciones con impacto.',
   ]
 
   return (
@@ -31,7 +54,7 @@ const About = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              Conóceme
+                {t.intro}
             </motion.span>
             <motion.h2 
               className="text-3xl md:text-5xl font-bold text-white mb-4"
@@ -40,7 +63,7 @@ const About = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Sobre Mí
+                {t.title}
             </motion.h2>
           </motion.div>
 
@@ -53,7 +76,7 @@ const About = () => {
               transition={{ duration: 0.6 }}
               className="space-y-5"
             >
-              {personalInfo.about.paragraphs.map((paragraph, index) => (
+              {paragraphs.map((paragraph, index) => (
                 <motion.p
                   key={index}
                   initial={{ opacity: 0, y: 15 }}
@@ -95,7 +118,7 @@ const About = () => {
               transition={{ duration: 0.6 }}
               className="grid grid-cols-2 gap-3"
             >
-              {features.map((feature, index) => (
+              {t.features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
