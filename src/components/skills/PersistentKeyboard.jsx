@@ -42,9 +42,10 @@ const keyboardStates = {
     scale: 0.75,
   },
   skills: {
-    position: [0, 0, 0],
-    rotation: [0.55, 0.15, 0],
-    scale: 1,
+    // Fixed, stable presentation position - centered and slightly tilted for showcase
+    position: [0, -0.3, 0],
+    rotation: [0.5, 0.12, 0],
+    scale: 1.05,
   },
   projects: {
     position: [-4, -0.5, 1],
@@ -64,7 +65,7 @@ const keyboardStates = {
 }
 
 // ============================================
-// SINGLE KEYCAP COMPONENT
+// SINGLE KEYCAP COMPONENT - Uniform DSA/XDA Style (like reference)
 // ============================================
 const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onClick, mousePosition }) => {
   const groupRef = useRef()
@@ -81,7 +82,7 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
 
   const idleParams = useMemo(() => ({
     floatSpeed: 0.4 + Math.random() * 0.3,
-    floatAmplitude: 0.015 + Math.random() * 0.01,
+    floatAmplitude: 0.006 + Math.random() * 0.004,
     floatOffset: Math.random() * Math.PI * 2,
   }), [])
 
@@ -93,13 +94,13 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
     const time = state.clock.elapsedTime
     const a = anim.current
 
-    // Idle float
+    // Subtle idle float
     const idleY = Math.sin(time * idleParams.floatSpeed + idleParams.floatOffset) * idleParams.floatAmplitude
 
     // Hover targets
     if (hovered && isInteractive) {
-      a.targetY = 0.15
-      a.targetScale = 1.08
+      a.targetY = 0.1
+      a.targetScale = 1.05
       a.targetGlow = 1
     } else {
       a.targetY = 0
@@ -113,7 +114,7 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
     } else {
       a.pressProgress = THREE.MathUtils.lerp(a.pressProgress, 0, 0.15)
     }
-    const pressOffset = Math.sin(a.pressProgress * Math.PI) * -0.12
+    const pressOffset = Math.sin(a.pressProgress * Math.PI) * -0.08
 
     // Smooth lerp
     a.y = THREE.MathUtils.lerp(a.y, a.targetY, 0.08)
@@ -125,7 +126,7 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
     groupRef.current.scale.setScalar(a.scale)
 
     if (glowRef.current) {
-      glowRef.current.emissiveIntensity = 0.05 + a.glow * 0.5
+      glowRef.current.emissiveIntensity = 0.03 + a.glow * 0.4
     }
   })
 
@@ -173,53 +174,55 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
           onPointerUp={handlePointerUp}
           onClick={handleClick}
         >
-          <boxGeometry args={[0.95, 0.9, 0.95]} />
+          <boxGeometry args={[0.68, 0.5, 0.68]} />
           <meshBasicMaterial visible={false} />
         </mesh>
       )}
 
-      {/* Key socket */}
-      <RoundedBox args={[0.88, 0.35, 0.88]} radius={0.06} smoothness={4} position={[0, -0.18, 0]}>
-        <meshStandardMaterial color="#0f0f0f" roughness={0.9} metalness={0} />
-      </RoundedBox>
-
-      {/* Key body */}
-      <RoundedBox args={[0.82, 0.55, 0.82]} radius={0.1} smoothness={4} position={[0, 0.12, 0]} castShadow>
-        <meshStandardMaterial color={colors.dark} roughness={0.6} metalness={0.1} />
-      </RoundedBox>
-
-      {/* Key top */}
-      <RoundedBox args={[0.72, 0.1, 0.72]} radius={0.06} smoothness={4} position={[0, 0.42, 0]} castShadow>
-        <meshStandardMaterial color={colors.main} roughness={0.45} metalness={0.15} />
-      </RoundedBox>
-
-      {/* Glow rim */}
-      <RoundedBox args={[0.76, 0.02, 0.76]} radius={0.05} smoothness={4} position={[0, 0.48, 0]}>
-        <meshStandardMaterial
+      {/* Keycap - simple rounded cube */}
+      <RoundedBox 
+        args={[0.65, 0.4, 0.65]} 
+        radius={0.1} 
+        smoothness={5} 
+        position={[0, 0, 0]} 
+        castShadow
+      >
+        <meshStandardMaterial 
           ref={glowRef}
-          color={colors.glow}
-          roughness={0.25}
-          metalness={0.2}
+          color={colors.main} 
+          roughness={0.4} 
+          metalness={0.08}
           emissive={colors.glow}
-          emissiveIntensity={0.05}
+          emissiveIntensity={0.02}
         />
       </RoundedBox>
 
+      {/* Concave dish on top - subtle rounded depression */}
+      <mesh position={[0, 0.18, 0]} rotation={[Math.PI, 0, 0]}>
+        <sphereGeometry args={[0.22, 20, 20, 0, Math.PI * 2, 0, Math.PI / 3]} />
+        <meshStandardMaterial 
+          color={colors.dark} 
+          roughness={0.3} 
+          metalness={0.1}
+        />
+      </mesh>
+
       {/* Icon label */}
       <Html
-        position={[0, 0.6, 0]}
+        position={[0, 0.32, 0]}
         center
         distanceFactor={6}
         style={{ pointerEvents: 'none', userSelect: 'none' }}
         zIndexRange={[0, 0]}
       >
         <div style={{
-          fontSize: icon.length > 2 ? '11px' : '16px',
-          fontWeight: 'bold',
+          fontSize: icon.length > 2 ? '8px' : '11px',
+          fontWeight: '700',
           color: '#fff',
-          textShadow: `0 2px 8px ${colors.glow}`,
-          opacity: 0.92,
+          textShadow: `0 1px 6px ${colors.glow}`,
+          opacity: 0.9,
           pointerEvents: 'none',
+          fontFamily: 'system-ui, sans-serif',
         }}>
           {icon}
         </div>
@@ -228,9 +231,9 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
       {/* Hover light */}
       {isInteractive && (
         <pointLight
-          position={[0, 0.8, 0]}
-          intensity={hovered ? 0.5 : 0}
-          distance={2}
+          position={[0, 0.5, 0]}
+          intensity={hovered ? 0.3 : 0}
+          distance={1.2}
           color={colors.glow}
           decay={2}
         />
@@ -240,30 +243,35 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
 }
 
 // ============================================
-// KEYBOARD BASE COMPONENT
+// KEYBOARD BASE - Minimal tight fit
 // ============================================
 const KeyboardBase = ({ width, depth }) => {
+  const pad = 0.12  // Margen mínimo
+  const caseW = width + pad
+  const caseD = depth + pad
+  const caseH = 0.32
+  
   return (
-    <group position={[0, -0.45, depth / 2 - 0.5]}>
-      {/* Main base plate */}
-      <RoundedBox args={[width + 0.8, 0.35, depth + 0.6]} radius={0.15} smoothness={4} receiveShadow castShadow>
-        <meshStandardMaterial color="#0a0a0a" roughness={0.85} metalness={0.05} />
+    <group position={[0, -0.1, 0]}>
+      {/* Case body */}
+      <RoundedBox 
+        args={[caseW, caseH, caseD]} 
+        radius={0.1} 
+        smoothness={4} 
+        receiveShadow 
+        castShadow
+      >
+        <meshStandardMaterial color="#0f0f0f" roughness={0.45} metalness={0.12} />
       </RoundedBox>
 
-      {/* Base rim/edge highlight */}
-      <RoundedBox args={[width + 0.9, 0.08, depth + 0.7]} radius={0.12} smoothness={4} position={[0, 0.2, 0]}>
-        <meshStandardMaterial color="#1a1a1a" roughness={0.7} metalness={0.1} />
-      </RoundedBox>
-
-      {/* Subtle bottom glow */}
-      <RoundedBox args={[width + 0.6, 0.02, depth + 0.4]} radius={0.1} smoothness={4} position={[0, -0.18, 0]}>
-        <meshStandardMaterial
-          color="#1a1a2e"
-          roughness={0.5}
-          metalness={0.2}
-          emissive="#0a0a1a"
-          emissiveIntensity={0.3}
-        />
+      {/* Key plate recess */}
+      <RoundedBox 
+        args={[caseW - 0.08, 0.08, caseD - 0.08]} 
+        radius={0.06} 
+        smoothness={3} 
+        position={[0, caseH / 2 + 0.01, 0]}
+      >
+        <meshStandardMaterial color="#080808" roughness={0.9} metalness={0.05} />
       </RoundedBox>
     </group>
   )
@@ -274,40 +282,56 @@ const KeyboardBase = ({ width, depth }) => {
 // ============================================
 const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, onSkillClick }) => {
   const keyboardRef = useRef()
+  const hasReachedSkills = useRef(false)
   const targetRef = useRef({
     position: new THREE.Vector3(...keyboardStates.hero.position),
     rotation: new THREE.Euler(...keyboardStates.hero.rotation),
     scale: keyboardStates.hero.scale,
   })
 
-  // Calculate keyboard layout
+  // Calculate keyboard layout - organized grid like a real macropad
   const { keyPositions, dimensions } = useMemo(() => {
     const positions = []
-    const rowSizes = [5, 5, 4, 2] // Rows of keys
-    const spacingX = 0.98
-    const spacingZ = 0.98
+    // Compact macropad layout - tight grid
+    const rowConfigs = [
+      { keys: 6, offsetX: 0 },      // Row 1
+      { keys: 6, offsetX: 0 },      // Row 2
+      { keys: 6, offsetX: 0 },      // Row 3
+      { keys: 6, offsetX: 0 },      // Row 4
+    ]
+    const spacingX = 0.75  // Tight spacing
+    const spacingZ = 0.75
     let skillIndex = 0
 
-    for (let row = 0; row < rowSizes.length && skillIndex < skills.length; row++) {
-      const cols = Math.min(rowSizes[row], skills.length - skillIndex)
+    // Calculate actual rows needed based on skills count
+    const totalSkills = skills.length
+    const keysPerRow = 4
+    const actualRows = Math.ceil(totalSkills / keysPerRow)
+    
+    // Center offset for Z axis
+    const centerOffsetZ = -(actualRows - 1) * spacingZ / 2
+
+    for (let row = 0; row < actualRows && skillIndex < skills.length; row++) {
+      const cols = Math.min(keysPerRow, skills.length - skillIndex)
       const startX = -(cols - 1) * spacingX / 2
 
       for (let col = 0; col < cols && skillIndex < skills.length; col++) {
         positions.push({
           skill: skills[skillIndex],
-          position: [startX + col * spacingX, 0, row * spacingZ],
+          position: [startX + col * spacingX, 0, centerOffsetZ + row * spacingZ],
         })
         skillIndex++
       }
     }
 
-    // Calculate dimensions for base
-    const maxWidth = Math.max(...rowSizes) * spacingX
-    const totalDepth = rowSizes.length * spacingZ
+    // Calculate exact dimensions based on actual layout
+    const maxCols = Math.min(keysPerRow, skills.length)
+    const actualWidth = (maxCols - 1) * spacingX + 0.68  // width of keys
+    const actualDepth = (actualRows - 1) * spacingZ + 0.68  // depth of keys
 
     return {
       keyPositions: positions,
-      dimensions: { width: maxWidth, depth: totalDepth }
+      dimensions: { width: actualWidth, depth: actualDepth }
     }
   }, [skills])
 
@@ -317,6 +341,13 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
     targetRef.current.position.set(...state.position)
     targetRef.current.rotation.set(...state.rotation)
     targetRef.current.scale = state.scale
+    
+    // Track if we've entered skills section
+    if (activeSection === 'skills') {
+      hasReachedSkills.current = true
+    } else {
+      hasReachedSkills.current = false
+    }
   }, [activeSection])
 
   // Animate keyboard to target state
@@ -326,6 +357,7 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
     const time = state.clock.elapsedTime
     const target = targetRef.current
     const lerpSpeed = 0.025
+    const isSkillsSection = activeSection === 'skills'
 
     // Position lerp
     keyboardRef.current.position.x = THREE.MathUtils.lerp(keyboardRef.current.position.x, target.position.x, lerpSpeed)
@@ -342,25 +374,31 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
     const newScale = THREE.MathUtils.lerp(currentScale, target.scale, lerpSpeed)
     keyboardRef.current.scale.setScalar(newScale)
 
-    // Idle floating animation
-    const idleY = Math.sin(time * 0.3) * 0.03 + Math.cos(time * 0.2) * 0.02
-    const idleRotX = Math.sin(time * 0.15) * 0.008
-    const idleRotZ = Math.cos(time * 0.12) * 0.005
+    // Idle floating animation - DISABLED in Skills section for stability
+    if (!isSkillsSection) {
+      const idleY = Math.sin(time * 0.3) * 0.03 + Math.cos(time * 0.2) * 0.02
+      const idleRotX = Math.sin(time * 0.15) * 0.008
+      const idleRotZ = Math.cos(time * 0.12) * 0.005
 
-    keyboardRef.current.position.y += idleY
-    keyboardRef.current.rotation.x += idleRotX
-    keyboardRef.current.rotation.z += idleRotZ
+      keyboardRef.current.position.y += idleY
+      keyboardRef.current.rotation.x += idleRotX
+      keyboardRef.current.rotation.z += idleRotZ
+    } else {
+      // In Skills: only very subtle breathing effect (almost imperceptible)
+      const subtleBreath = Math.sin(time * 0.4) * 0.003
+      keyboardRef.current.position.y += subtleBreath
+    }
   })
 
   const isInteractive = activeSection === 'skills'
 
   return (
     <group ref={keyboardRef} position={keyboardStates.hero.position}>
-      {/* Keyboard base plate */}
+      {/* Keyboard case */}
       <KeyboardBase width={dimensions.width} depth={dimensions.depth} />
 
-      {/* All keycaps */}
-      <group position={[0, 0, 0]}>
+      {/* All keycaps - positioned inside the case */}
+      <group position={[0, 0.12, 0]}>
         {keyPositions.map(({ skill, position }, index) => (
           <Keycap
             key={skill.id}
@@ -374,8 +412,8 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
         ))}
       </group>
 
-      {/* Keyboard ambient glow underneath */}
-      <pointLight position={[0, -1, 1]} intensity={0.15} distance={6} color="#2a2a4a" decay={2} />
+      {/* Subtle ambient lighting */}
+      <pointLight position={[0, 0.6, 0]} intensity={0.06} distance={2.5} color="#2a2a4a" decay={2} />
     </group>
   )
 }
@@ -410,22 +448,35 @@ const CameraRig = ({ children, activeSection }) => {
 const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover, onSkillClick }) => {
   return (
     <>
-      {/* Lighting setup */}
-      <ambientLight intensity={0.3} />
+      {/* Lighting setup - optimized for depth and premium look */}
+      <ambientLight intensity={0.25} />
+      
+      {/* Main key light - creates primary shadows */}
       <directionalLight
-        position={[-6, 12, 8]}
-        intensity={1}
+        position={[-5, 10, 6]}
+        intensity={1.1}
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
         shadow-camera-far={30}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        shadow-camera-left={-8}
+        shadow-camera-right={8}
+        shadow-camera-top={8}
+        shadow-camera-bottom={-8}
+        shadow-bias={-0.0005}
       />
-      <directionalLight position={[8, 6, -6]} intensity={0.4} color="#a0c4ff" />
-      <pointLight position={[-4, 4, -8]} intensity={0.3} color="#ffd4a0" />
-      <pointLight position={[0, -3, 5]} intensity={0.2} color="#4a4a8a" />
+      
+      {/* Fill light - softer, from opposite side */}
+      <directionalLight position={[6, 5, -4]} intensity={0.35} color="#a8c8ff" />
+      
+      {/* Rim light - highlights edges */}
+      <directionalLight position={[-3, 3, -8]} intensity={0.25} color="#ffd8b0" />
+      
+      {/* Top down fill for keycaps */}
+      <pointLight position={[0, 6, 2]} intensity={0.3} distance={12} color="#ffffff" decay={2} />
+      
+      {/* Subtle colored accents */}
+      <pointLight position={[-5, 2, 4]} intensity={0.15} distance={8} color="#4a6a9a" decay={2} />
+      <pointLight position={[5, 2, 4]} intensity={0.15} distance={8} color="#6a4a8a" decay={2} />
 
       {/* Main keyboard with parallax wrapper */}
       <CameraRig activeSection={activeSection}>
@@ -439,9 +490,9 @@ const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
       </CameraRig>
 
       {/* Floor shadow receiver */}
-      <mesh position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <mesh position={[0, -2.2, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[30, 30]} />
-        <shadowMaterial opacity={0.15} />
+        <shadowMaterial opacity={0.2} />
       </mesh>
     </>
   )
