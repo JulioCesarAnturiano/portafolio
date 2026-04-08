@@ -292,21 +292,15 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
   // Calculate keyboard layout - organized grid like a real macropad
   const { keyPositions, dimensions } = useMemo(() => {
     const positions = []
-    // Compact macropad layout - tight grid
-    const rowConfigs = [
-      { keys: 6, offsetX: 0 },      // Row 1
-      { keys: 6, offsetX: 0 },      // Row 2
-      { keys: 6, offsetX: 0 },      // Row 3
-      { keys: 6, offsetX: 0 },      // Row 4
-    ]
     const spacingX = 0.75  // Tight spacing
     const spacingZ = 0.75
     let skillIndex = 0
 
-    // Calculate actual rows needed based on skills count
+    // 4x6 layout (4 rows, 6 columns)
+    const keysPerRow = 6
+    const maxRows = 4
     const totalSkills = skills.length
-    const keysPerRow = 4
-    const actualRows = Math.ceil(totalSkills / keysPerRow)
+    const actualRows = Math.min(maxRows, Math.ceil(totalSkills / keysPerRow))
     
     // Center offset for Z axis
     const centerOffsetZ = -(actualRows - 1) * spacingZ / 2
