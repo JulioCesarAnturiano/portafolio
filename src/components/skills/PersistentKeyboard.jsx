@@ -1,7 +1,34 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { RoundedBox, Html } from '@react-three/drei'
+import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber'
+import { RoundedBox } from '@react-three/drei'
 import { Suspense, useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import * as THREE from 'three'
+
+// ============================================
+// TEXTURE MAP - Maps skill id to texture path
+// ============================================
+const textureMap = {
+  html: '/textures/html.png',
+  css: '/textures/css.png',
+  javascript: '/textures/js.png',
+  typescript: '/textures/typescript.png',
+  react: '/textures/react.png',
+  tailwind: '/textures/tailwind.png',
+  nodejs: '/textures/nodejs.png',
+  express: '/textures/express.png',
+  php: '/textures/php.png',
+  laravel: '/textures/laravel.png',
+  postgresql: '/textures/postgresql.png',
+  mysql: '/textures/mysql.png',
+  git: '/textures/git.png',
+  github: '/textures/github.png',
+  docker: '/textures/docker.png',
+  flutter: '/textures/flutter.png',
+  angular: '/textures/angular.png',
+  firebase: '/textures/firebase.png',
+  python: '/textures/python.png',
+  java: '/textures/java.png',
+  'c++': '/textures/c++.png',
+}
 
 // ============================================
 // CONFIGURATION - Technology colors and icons
@@ -65,7 +92,62 @@ const keyboardStates = {
 }
 
 // ============================================
-// SINGLE KEYCAP COMPONENT - Uniform DSA/XDA Style (like reference)
+// LOGO DECAL - 3D texture on top of keycap
+// ============================================
+const LogoDecal = ({ skillId, colors }) => {
+  const texturePath = textureMap[skillId]
+  const [texture, setTexture] = useState(null)
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    if (!texturePath) {
+      setHasError(true)
+      return
+    }
+
+    const loader = new THREE.TextureLoader()
+    loader.load(
+      texturePath,
+      (loadedTexture) => {
+        loadedTexture.colorSpace = THREE.SRGBColorSpace
+        loadedTexture.anisotropy = 16
+        loadedTexture.minFilter = THREE.LinearMipmapLinearFilter
+        loadedTexture.magFilter = THREE.LinearFilter
+        loadedTexture.needsUpdate = true
+        setTexture(loadedTexture)
+      },
+      undefined,
+      () => {
+        setHasError(true)
+      }
+    )
+
+    return () => {
+      if (texture) texture.dispose()
+    }
+  }, [texturePath])
+
+  if (hasError || !texture) return null
+
+  return (
+    <mesh position={[0, 0.21, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[0.4, 0.4]} />
+      <meshStandardMaterial
+        map={texture}
+        transparent={true}
+        alphaTest={0.1}
+        roughness={0.5}
+        metalness={0.05}
+        depthWrite={false}
+        polygonOffset={true}
+        polygonOffsetFactor={-1}
+      />
+    </mesh>
+  )
+}
+
+// ============================================
+// KEYCAP COMPONENT - Individual keyboard key
 // ============================================
 const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onClick, mousePosition }) => {
   const groupRef = useRef()
@@ -87,7 +169,6 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
   }), [])
 
   const colors = techColors[skill.id] || { main: '#666', dark: '#444', glow: '#888' }
-  const icon = techIcons[skill.id] || skill.icon
 
   useFrame((state) => {
     if (!groupRef.current) return
@@ -207,26 +288,8 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
         />
       </mesh>
 
-      {/* Icon label */}
-      <Html
-        position={[0, 0.32, 0]}
-        center
-        distanceFactor={6}
-        style={{ pointerEvents: 'none', userSelect: 'none' }}
-        zIndexRange={[0, 0]}
-      >
-        <div style={{
-          fontSize: icon.length > 2 ? '8px' : '11px',
-          fontWeight: '700',
-          color: '#fff',
-          textShadow: `0 1px 6px ${colors.glow}`,
-          opacity: 0.9,
-          pointerEvents: 'none',
-          fontFamily: 'system-ui, sans-serif',
-        }}>
-          {icon}
-        </div>
-      </Html>
+      {/* Logo texture on top of keycap */}
+      <LogoDecal skillId={skill.id} colors={colors} />
 
       {/* Hover light */}
       {isInteractive && (
