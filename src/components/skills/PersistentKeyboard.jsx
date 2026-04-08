@@ -12,22 +12,27 @@ const textureMap = {
   javascript: '/textures/js.png',
   typescript: '/textures/typescript.png',
   react: '/textures/react.png',
-  tailwind: '/textures/tailwind.png',
+  linux: '/textures/linux.png',
   nodejs: '/textures/nodejs.png',
   express: '/textures/express.png',
   php: '/textures/php.png',
   laravel: '/textures/laravel.png',
   postgresql: '/textures/postgresql.png',
   mysql: '/textures/mysql.png',
+  mongodb: '/textures/mongodb.png',
+  sqlite: '/textures/sqlite.png',
   git: '/textures/git.png',
   github: '/textures/github.png',
   docker: '/textures/docker.png',
   flutter: '/textures/flutter.png',
-  angular: '/textures/angular.png',
   firebase: '/textures/firebase.png',
   python: '/textures/python.png',
   java: '/textures/java.png',
-  'c++': '/textures/c++.png',
+  cpp: '/textures/c++.png',
+  n8n: '/textures/n8n.png',
+  mediapipe: '/textures/mediapipe.png',
+  blender: '/textures/blender.png',
+  godot: '/textures/godotengine.png',
 }
 
 // ============================================
@@ -39,24 +44,37 @@ const techColors = {
   javascript: { main: '#f7df1e', dark: '#c9b500', glow: '#ffe94d' },
   typescript: { main: '#3178c6', dark: '#235a9e', glow: '#5a9cf5' },
   react: { main: '#61dafb', dark: '#3db8d9', glow: '#8ae8ff' },
-  tailwind: { main: '#06b6d4', dark: '#0891a8', glow: '#3dd6f0' },
+  linux: { main: '#fcc624', dark: '#f59e0b', glow: '#fde047' },
   nodejs: { main: '#339933', dark: '#267326', glow: '#4dcc4d' },
-  express: { main: '#404040', dark: '#2a2a2a', glow: '#666666' },
+  express: { main: '#68a063', dark: '#52804d', glow: '#8bc985' },
   php: { main: '#777bb4', dark: '#5a5d8c', glow: '#9a9dd4' },
   laravel: { main: '#ff2d20', dark: '#cc1a0f', glow: '#ff5c52' },
+  python: { main: '#3776ab', dark: '#2a5a87', glow: '#5d9dd4' },
+  java: { main: '#f89820', dark: '#c87a19', glow: '#ffb84d' },
+  cpp: { main: '#00599c', dark: '#004477', glow: '#3d8fd4' },
   postgresql: { main: '#336791', dark: '#264d6d', glow: '#4d8ac2' },
   mysql: { main: '#4479a1', dark: '#335d7a', glow: '#5d9dd4' },
-  git: { main: '#f05032', dark: '#c13a22', glow: '#ff7a5c' },
-  github: { main: '#181717', dark: '#0d0d0d', glow: '#4a5560' },
-  docker: { main: '#2496ed', dark: '#1a75c2', glow: '#52b0ff' },
+  mongodb: { main: '#47a248', dark: '#367a37', glow: '#6bc96f' },
+  sqlite: { main: '#7dd3fc', dark: '#38bdf8', glow: '#a5f3fc' },
   flutter: { main: '#02569b', dark: '#01406f', glow: '#3a8fd4' },
+  firebase: { main: '#ffca28', dark: '#f9a825', glow: '#ffd54f' },
+  git: { main: '#f05032', dark: '#c13a22', glow: '#ff7a5c' },
+  github: { main: '#e2e8f0', dark: '#cbd5e1', glow: '#f1f5f9' },
+  n8n: { main: '#ea4e9d', dark: '#d63384', glow: '#f472b6' },
+  mediapipe: { main: '#a855f7', dark: '#9333ea', glow: '#c084fc' },
+  blender: { main: '#f5792a', dark: '#e35d14', glow: '#ff944d' },
+  godot: { main: '#478cbf', dark: '#3770a3', glow: '#6aa8d4' },
+  docker: { main: '#2496ed', dark: '#1a75c2', glow: '#52b0ff' },
 }
 
 const techIcons = {
   html: 'HTML', css: 'CSS', javascript: 'JS', typescript: 'TS',
-  react: '⚛', tailwind: '🌊', nodejs: 'Node', express: 'Ex',
-  php: 'PHP', laravel: 'L', postgresql: 'PG', mysql: 'SQL',
-  git: 'Git', github: '🐙', docker: '🐳', flutter: 'F',
+  react: '⚛', linux: '🐧', nodejs: 'Node', express: 'Ex',
+  php: 'PHP', laravel: 'L', python: 'Py', java: '☕',
+  cpp: 'C++', postgresql: 'PG', mysql: 'SQL', mongodb: 'M',
+  sqlite: 'DB', flutter: 'F', firebase: '🔥', git: 'Git',
+  github: '🐙', n8n: '🔗', mediapipe: '🎯', blender: '🎨',
+  godot: '🎮', docker: '🐳',
 }
 
 // ============================================
@@ -64,9 +82,10 @@ const techIcons = {
 // ============================================
 const keyboardStates = {
   hero: {
-    position: [4.5, 0.5, 0],
-    rotation: [0.5, -0.4, 0.1],
-    scale: 0.75,
+    // Left side, rotated 90° to stand vertical, keys facing front
+    position: [-3.5, 0, 4],
+    rotation: [0, 0, 1.57],  // Z rotation 90° = vertical standing
+    scale: 1.0,
   },
   skills: {
     // Fixed, stable presentation position - centered and slightly tilted for showcase
@@ -75,19 +94,22 @@ const keyboardStates = {
     scale: 1.05,
   },
   projects: {
-    position: [-4, -0.5, 1],
-    rotation: [0.4, 0.5, -0.05],
-    scale: 0.6,
+    // Left side, vertical standing, keys facing front
+    position: [-3.8, 0, 4],
+    rotation: [0, 0, 1.57],  // 90° vertical
+    scale: 0.95,
   },
   about: {
-    position: [4, -1, 2],
-    rotation: [0.35, -0.35, 0.05],
-    scale: 0.55,
+    // Left side, vertical standing, keys facing front
+    position: [-3.5, 0, 4],
+    rotation: [0, 0, 1.57],  // 90° vertical
+    scale: 1.0,
   },
   contact: {
-    position: [3.5, 0.5, 1],
-    rotation: [0.45, -0.3, 0],
-    scale: 0.6,
+    // Left side, vertical standing, keys facing front
+    position: [-3.5, 0.3, 4],
+    rotation: [0, 0, 1.57],  // 90° vertical
+    scale: 1.0,
   },
 }
 
@@ -359,7 +381,7 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
     const spacingZ = 0.75
     let skillIndex = 0
 
-    // 4x6 layout (4 rows, 6 columns)
+    // 4x6 layout (4 rows, 6 columns) - always the same
     const keysPerRow = 6
     const maxRows = 4
     const totalSkills = skills.length
@@ -576,8 +598,12 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
 
   if (!skills || skills.length === 0) return null
 
+  // In Skills section: keyboard center, interactive
+  // In other sections: keyboard as decorative element on left side
+  const keyboardZIndex = activeSection === 'skills' ? 1 : 5
+
   return (
-    <div className="fixed inset-0" style={{ zIndex: 1 }}>
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: keyboardZIndex }}>
       {/* Gradient background */}
       <div
         className="absolute inset-0"
@@ -596,12 +622,12 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
-        style={{ touchAction: 'none' }}
+        style={{ touchAction: 'none', pointerEvents: 'auto' }}
         eventSource={document.documentElement}
         eventPrefix="client"
       >
         <color attach="background" args={['#000000']} />
-        <fog attach="fog" args={['#000000', 15, 35]} />
+        {/* Fog disabled to keep keyboard sharp in all sections */}
         <Suspense fallback={<Loader />}>
           <KeyboardScene
             skills={skills}

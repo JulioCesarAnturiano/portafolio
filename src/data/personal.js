@@ -1,44 +1,44 @@
-// Información personal - Edita estos datos con tu información
+// Información personal - Julio Cesar Anturiano Enlate
 export const personalInfo = {
-  name: "Tu Nombre",
-  title: "Desarrollador Full Stack",
-  subtitle: "Creando experiencias digitales excepcionales",
-  description: "Desarrollador apasionado por crear aplicaciones web modernas, escalables y con interfaces de usuario excepcionales. Especializado en React, Node.js y tecnologías cloud.",
-  email: "tu@email.com",
-  location: "Tu Ciudad, País",
-  availability: "Disponible para proyectos freelance",
+  name: "Julio Cesar Anturiano Eulate",
+  title: "Full-Stack Developer & Software Engineer",
+  subtitle: "Building production-ready systems and competitive programming solutions",
+  description: "Third-year Informatics Engineering student at UMSS with demonstrated experience building and deploying critical production systems for public institutions. ICPC competitor with strong foundations in algorithms, data structures and competitive programming. Self-driven and passionate about Artificial Intelligence, software architecture and real-world impact systems.",
+  email: "juliocesaranturianoenlate@gmail.com",
+  location: "Cochabamba, Bolivia",
+  availability: "Available for internships and freelance projects",
   
-  // Redes sociales - Agrega tus URLs
+  // Redes sociales
   social: {
-    github: "https://github.com/tuusuario",
-    linkedin: "https://linkedin.com/in/tuusuario",
-    twitter: "https://twitter.com/tuusuario",
-    instagram: "https://instagram.com/tuusuario",
+    github: "https://github.com/JulioCesarAnturiano",
+    linkedin: "https://linkedin.com/in/JulioCesarAnturiano",
+    twitter: null,
+    instagram: null,
   },
 
   // Resumen para la sección About
   about: {
     paragraphs: [
-      "Soy un desarrollador Full Stack con más de X años de experiencia creando soluciones digitales innovadoras. Mi enfoque se centra en escribir código limpio, escalable y mantenible.",
-      "Me apasiona aprender nuevas tecnologías y aplicar las mejores prácticas de desarrollo. Disfruto trabajando tanto en el frontend como en el backend, creando experiencias de usuario fluidas respaldadas por arquitecturas robustas.",
-      "Cuando no estoy programando, me gusta contribuir a proyectos open source, escribir artículos técnicos y mantenerme actualizado con las últimas tendencias en desarrollo web."
+      "I'm a third-year Informatics Engineering student at Universidad Mayor de San Simón (UMSS) with hands-on experience deploying production systems for government institutions. As an ICPC competitor, I have strong foundations in algorithms, data structures, and problem-solving under pressure.",
+      "My passion lies in building scalable full-stack applications that solve real-world problems. I've worked on critical systems including electoral platforms, municipal transportation apps, and 3D motion capture tools. I'm self-driven and constantly learning new technologies to create impactful solutions.",
+      "Beyond coding, I'm deeply interested in Artificial Intelligence, competitive programming, and computer graphics. I enjoy contributing to open-source projects and exploring cutting-edge technologies like LLMs, NLP, and 3D simulation."
     ],
     highlights: [
-      "Desarrollo de aplicaciones React de alto rendimiento",
-      "APIs RESTful y GraphQL con Node.js",
-      "Bases de datos SQL y NoSQL",
-      "Arquitectura de microservicios",
-      "CI/CD y DevOps",
-      "Metodologías ágiles"
+      "Full-Stack Development (React, Node.js, Laravel, Flutter)",
+      "Production systems for government institutions",
+      "ICPC competitive programming experience",
+      "REST APIs & Database Architecture",
+      "Computer Vision & 3D Graphics",
+      "AI & Machine Learning projects"
     ]
   },
 
-  // Estadísticas (opcional)
+  // Estadísticas
   stats: [
-    { label: "Años de experiencia", value: "3+" },
-    { label: "Proyectos completados", value: "25+" },
-    { label: "Clientes satisfechos", value: "15+" },
-    { label: "Tecnologías dominadas", value: "20+" },
+    { label: "University Year", value: "3rd" },
+    { label: "Projects Deployed", value: "6+" },
+    { label: "ICPC Participant", value: "2024" },
+    { label: "Technologies", value: "20+" },
   ]
 }
 

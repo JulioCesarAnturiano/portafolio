@@ -1,113 +1,117 @@
-// Proyectos - Edita esta lista con tus proyectos
+// Proyectos - Proyectos reales de Julio Cesar Anturiano Enlate
 export const projects = [
   {
     id: 1,
-    title: "E-Commerce Platform",
-    description: "Plataforma de comercio electrónico completa con carrito de compras, pasarela de pagos, panel de administración y gestión de inventario.",
-    image: "/projects/ecommerce.jpg", // Puedes agregar imágenes en public/projects/
-    tags: ["React", "Node.js", "PostgreSQL", "Stripe", "Tailwind CSS"],
+    title: "Electoral RunoH Platform",
+    description: "Real-time web platform for vote monitoring and electoral record validation deployed for the March 22, 2026 Municipal Election. Co-developed production system handling live electoral operations with role-based access control.",
+    image: "/projects/electoral.jpg",
+    tags: ["React", "Vite", "Node.js", "Express", "PostgreSQL", "JWT"],
     category: "fullstack",
-    github: "https://github.com/tuusuario/ecommerce",
-    demo: "https://ecommerce-demo.com",
+    github: null,
+    demo: null,
     featured: true,
     highlights: [
-      "Autenticación con JWT",
-      "Integración con Stripe",
-      "Dashboard admin completo",
-      "Responsive design"
+      "Real-time ballot monitoring during live elections",
+      "Role-based access (administrators, delegates, supervisors)",
+      "Electoral workflow & record validation",
+      "Backend APIs ensuring data integrity & traceability",
+      "Supported transparent reporting during voting process"
     ]
   },
   {
     id: 2,
-    title: "Task Management App",
-    description: "Aplicación de gestión de tareas estilo Kanban con drag & drop, colaboración en tiempo real y notificaciones.",
-    image: "/projects/taskapp.jpg",
-    tags: ["React", "TypeScript", "Firebase", "Tailwind CSS"],
-    category: "frontend",
-    github: "https://github.com/tuusuario/taskapp",
-    demo: "https://taskapp-demo.com",
+    title: "ColcaTrufis - Municipal Transportation Platform",
+    description: "Full-stack multimodal transportation platform built in collaboration with the Autonomous Municipal Government of Colcapirhua. Cross-platform mobile app with integrated mapping capabilities and real-time GPS tracking.",
+    image: "/projects/colcatrufis.jpg",
+    tags: ["Laravel 10", "Flutter", "MySQL", "PHP 8.1", "REST API", "GeoJSON"],
+    category: "fullstack",
+    github: null,
+    demo: null,
     featured: true,
     highlights: [
-      "Drag & drop intuitivo",
-      "Tiempo real con WebSockets",
-      "Filtros y búsqueda avanzada",
-      "Tema oscuro/claro"
+      "GPS Location Services integration",
+      "Cross-platform mobile app (FlutterDart)",
+      "GeoJSON & Nominatim geolocation",
+      "RESTful APIs for spatial data",
+      "Administrative panels for transport officials"
     ]
   },
   {
     id: 3,
-    title: "API REST Blog",
-    description: "API RESTful para un sistema de blog con autenticación, roles de usuario, comentarios y sistema de likes.",
-    image: "/projects/api.jpg",
-    tags: ["Node.js", "Express", "MongoDB", "JWT", "Docker"],
-    category: "backend",
-    github: "https://github.com/tuusuario/blog-api",
-    demo: "https://api-docs.com",
-    featured: false,
+    title: "Webcam-Based Motion Capture for 3D Animation",
+    description: "Markerless motion capture system using webcam and MediaPipe Pose for 3D animation. Applies quaternion mathematics and 3D coordinate transforms for per-bone rotations in Blender, exporting structured JSON animation data without specialized hardware.",
+    image: "/projects/mocap.jpg",
+    tags: ["Python", "MediaPipe", "OpenCV", "NumPy", "Blender", "Linear Algebra"],
+    category: "research",
+    github: null,
+    demo: null,
+    featured: true,
     highlights: [
-      "Documentación Swagger",
-      "Rate limiting",
-      "Validación con Joi",
-      "Tests con Jest"
+      "Markerless motion capture using webcam",
+      "Quaternion & 3D coordinate transforms",
+      "Exports FBX with 5 bones structure",
+      "No specialized hardware required",
+      "Real-time pose estimation"
     ]
   },
   {
     id: 4,
-    title: "Portfolio Website",
-    description: "Sitio web de portafolio personal con animaciones 3D, diseño moderno y optimizado para SEO.",
-    image: "/projects/portfolio.jpg",
-    tags: ["React", "Framer Motion", "Tailwind CSS", "Vite"],
-    category: "frontend",
-    github: "https://github.com/tuusuario/portfolio",
-    demo: "https://tuportfolio.com",
-    featured: true,
+    title: "Custom Data Structures Library & Project Management System",
+    description: "Java-based implementation of custom data structures including binary trees, doubly linked lists, custom sets, maps, and graphs from scratch. Applied these structures in a project management system with dependencies and workflows.",
+    image: "/projects/datastructures.jpg",
+    tags: ["Java", "OOP", "Algorithms", "Graph Theory", "Data Structures"],
+    category: "academic",
+    github: null,
+    demo: null,
+    featured: false,
     highlights: [
-      "Animaciones fluidas",
-      "Skills interactivos",
-      "100% responsive",
-      "Performance optimizada"
+      "Binary trees & doubly linked lists",
+      "Custom sets, maps & graphs",
+      "Project dependencies & workflows",
+      "Built entirely from scratch"
     ]
   },
   {
     id: 5,
-    title: "Chat Application",
-    description: "Aplicación de chat en tiempo real con salas, mensajes privados, emojis y compartir archivos.",
-    image: "/projects/chat.jpg",
-    tags: ["React", "Socket.io", "Node.js", "Redis"],
+    title: "NLP Command Library & Martial Arts Web Platform",
+    description: "PHP library using regex for natural language pattern detection, triggering actions from voice and video commands. Applied in a Laravel platform for martial arts management with SQL Server & SQLite backends.",
+    image: "/projects/nlp-martial.jpg",
+    tags: ["PHP", "Laravel", "NLP", "Regex", "SQL Server", "SQLite"],
     category: "fullstack",
-    github: "https://github.com/tuusuario/chat-app",
-    demo: "https://chat-demo.com",
+    github: null,
+    demo: null,
     featured: false,
     highlights: [
-      "Mensajería en tiempo real",
-      "Salas públicas y privadas",
-      "Historial de mensajes",
-      "Indicador de escritura"
+      "Natural language command processing",
+      "Voice & video integration",
+      "Laravel web platform",
+      "Dual database support (SQL Server & SQLite)"
     ]
   },
   {
     id: 6,
-    title: "Weather Dashboard",
-    description: "Dashboard del clima con pronóstico extendido, mapas interactivos y alertas meteorológicas.",
-    image: "/projects/weather.jpg",
-    tags: ["React", "OpenWeather API", "Chart.js", "Geolocation"],
-    category: "frontend",
-    github: "https://github.com/tuusuario/weather-app",
-    demo: "https://weather-demo.com",
+    title: "Game Development - Godot 4 RPG",
+    description: "Developed RPG-style games from scratch in Godot 4 including logic, mechanics, state systems and UI. Integrated 3D modelling (Blender) and pixel art into end-to-end interactive experiences.",
+    image: "/projects/godot-game.jpg",
+    tags: ["Godot 4", "GDScript", "Blender", "Pixel Art", "3D Modelling"],
+    category: "game",
+    github: null,
+    demo: null,
     featured: false,
     highlights: [
-      "Pronóstico 7 días",
-      "Gráficos interactivos",
-      "Geolocalización",
-      "PWA instalable"
+      "RPG game mechanics & state systems",
+      "3D modelling integration (Blender)",
+      "Pixel art assets",
+      "End-to-end interactive experiences"
     ]
   }
 ]
 
 // Categorías de proyectos
 export const projectCategories = [
-  { id: "all", name: "Todos" },
-  { id: "frontend", name: "Frontend" },
-  { id: "backend", name: "Backend" },
+  { id: "all", name: "All" },
   { id: "fullstack", name: "Full Stack" },
+  { id: "research", name: "Research" },
+  { id: "academic", name: "Academic" },
+  { id: "game", name: "Game Dev" },
 ]
