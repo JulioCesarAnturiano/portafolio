@@ -88,28 +88,28 @@ const keyboardStates = {
     scale: 1.0,
   },
   skills: {
-    // Fixed, stable presentation position - centered and slightly tilted for showcase
-    position: [0, -0.3, 0],
+    // Centered and closer to camera - immersive view
+    position: [0, -0.3, -1.2],  // Z más cerca de la cámara
     rotation: [0.5, 0.12, 0],
-    scale: 1.05,
+    scale: 1.8,  // Mayor escala para teclas más grandes
   },
   projects: {
-    // Left side, vertical standing, keys facing front
-    position: [-3.8, 0, 4],
-    rotation: [0, 0, 1.57],  // 90° vertical
-    scale: 0.95,
+    // Left side, 90° vertical and -90° horizontal
+    position: [-5.5, 0.2, 1.5],
+    rotation: [1.57, -1.57, 0],  // 90° vertical (X), -90° horizontal (Y)
+    scale: 1.0,
   },
   about: {
-    // Left side, vertical standing, keys facing front
-    position: [-3.5, 0, 4],
-    rotation: [0, 0, 1.57],  // 90° vertical
+    // Left side, facing user frontally
+    position: [-3.5, 1, 5.5],
+    rotation: [0.15, 0.3, 0],  // Leve inclinación X, rotación Y para mirar al usuario
     scale: 1.0,
   },
   contact: {
-    // Left side, vertical standing, keys facing front
-    position: [-3.5, 0.3, 4],
-    rotation: [0, 0, 1.57],  // 90° vertical
-    scale: 1.0,
+    // Right side, facing user frontally, closer to camera
+    position: [3.5, 1, 5.5],  // Z ajustado
+    rotation: [0.15, -0.3, 0],  // Leve inclinación X, rotación Y para mirar al usuario
+    scale: 0.9,  // Ligeramente más pequeño para no competir con el formulario de contacto
   },
 }
 

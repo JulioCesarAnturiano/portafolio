@@ -117,8 +117,6 @@ const Projects = () => {
 
   return (
     <section id="projects" className="relative py-24 overflow-hidden">
-      {/* Semi-transparent background */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
       <div className="container-custom relative z-10">
         {/* Right-aligned content to leave space for keyboard on left */}
