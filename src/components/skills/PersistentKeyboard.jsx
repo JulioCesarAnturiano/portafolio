@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber'
-import { RoundedBox } from '@react-three/drei'
+import { RoundedBox, Text, Center, Html } from '@react-three/drei'
 import { Suspense, useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import * as THREE from 'three'
 
@@ -33,6 +33,21 @@ const textureMap = {
   mediapipe: '/textures/mediapipe.png',
   blender: '/textures/blender.png',
   godot: '/textures/godotengine.png',
+}
+
+const cardTemplateMap = {
+  frontend: '/textures/CartaAzul.png',
+  backend: '/textures/cartaRoja.png',
+  database: '/textures/CartaPlateada.png',
+  mobile: '/textures/cartaRosa.png',
+  ai: '/textures/cartaRosaMetalica.png',
+  tools: '/textures/cartaVerde.png',
+  default: '/textures/cartaNegra.png',
+}
+
+const getSkillCardTemplate = (skill) => {
+  if (!skill?.category) return cardTemplateMap.default
+  return cardTemplateMap[skill.category] || cardTemplateMap.default
 }
 
 // ============================================
@@ -171,7 +186,7 @@ const LogoDecal = ({ skillId, colors }) => {
 // ============================================
 // KEYCAP COMPONENT - Individual keyboard key
 // ============================================
-const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onClick, mousePosition }) => {
+const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, mousePosition }) => {
   const groupRef = useRef()
   const glowRef = useRef()
   const [hovered, setHovered] = useState(false)
@@ -260,12 +275,6 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
     setPressed(false)
   }, [])
 
-  const handleClick = useCallback((e) => {
-    if (!isInteractive) return
-    e.stopPropagation()
-    onClick?.(skill)
-  }, [skill, onClick, isInteractive])
-
   return (
     <group ref={groupRef} position={localPosition}>
       {/* Hit area */}
@@ -275,7 +284,6 @@ const Keycap = ({ skill, localPosition, isInteractive, onHover, onUnhover, onCli
           onPointerOut={handlePointerOut}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
-          onClick={handleClick}
         >
           <boxGeometry args={[0.68, 0.5, 0.68]} />
           <meshBasicMaterial visible={false} />
@@ -365,7 +373,7 @@ const KeyboardBase = ({ width, depth }) => {
 // ============================================
 // COMPLETE KEYBOARD ASSEMBLY
 // ============================================
-const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, onSkillClick }) => {
+const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover }) => {
   const keyboardRef = useRef()
   const hasReachedSkills = useRef(false)
   const targetRef = useRef({
@@ -486,7 +494,6 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
             isInteractive={isInteractive}
             onHover={onSkillHover}
             onUnhover={onSkillUnhover}
-            onClick={onSkillClick}
           />
         ))}
       </group>
@@ -524,7 +531,7 @@ const CameraRig = ({ children, activeSection }) => {
 // ============================================
 // MAIN SCENE
 // ============================================
-const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover, onSkillClick }) => {
+const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover }) => {
   return (
     <>
       {/* Lighting setup - optimized for depth and premium look */}
@@ -564,7 +571,6 @@ const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover, on
           activeSection={activeSection}
           onSkillHover={onSkillHover}
           onSkillUnhover={onSkillUnhover}
-          onSkillClick={onSkillClick}
         />
       </CameraRig>
 
@@ -594,7 +600,6 @@ const Loader = () => (
 // ============================================
 const PersistentKeyboard = ({ skills, activeSection }) => {
   const [hoveredSkill, setHoveredSkill] = useState(null)
-  const [clickedSkill, setClickedSkill] = useState(null)
 
   if (!skills || skills.length === 0) return null
 
@@ -608,7 +613,35 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at 30% 20%, #0a0a1a 0%, #000000 50%, #000000 100%)',
+          background: '#000000',
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0,
+          backgroundImage: `
+            linear-gradient(160deg, rgba(12, 6, 24, 0.9) 0%, rgba(22, 12, 44, 0.7) 45%, rgba(8, 4, 18, 0.95) 100%),
+            url('/textures/backgorund.jpg')
+          `,
+          backgroundSize: 'cover, cover',
+          backgroundPosition: 'center, center',
+          backgroundRepeat: 'no-repeat, no-repeat',
+          backgroundBlendMode: 'overlay',
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 1,
+          backgroundImage: `
+            radial-gradient(circle at 12% 22%, rgba(255,255,255,0.92) 1px, transparent 2px),
+            radial-gradient(circle at 74% 31%, rgba(255,255,255,0.62) 1px, transparent 2px),
+            radial-gradient(circle at 43% 64%, rgba(255,255,255,0.82) 1px, transparent 2px),
+            radial-gradient(circle at 86% 14%, rgba(255,255,255,0.72) 1px, transparent 2px),
+            radial-gradient(circle at 28% 78%, rgba(255,255,255,0.72) 1px, transparent 2px),
+            radial-gradient(circle at 92% 82%, rgba(255,255,255,0.56) 1px, transparent 2px)
+          `,
         }}
       />
 
@@ -634,70 +667,89 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
             activeSection={activeSection}
             onSkillHover={setHoveredSkill}
             onSkillUnhover={() => setHoveredSkill(null)}
-            onSkillClick={setClickedSkill}
           />
         </Suspense>
       </Canvas>
 
-      {/* Skill info tooltip - only in skills section */}
-      {activeSection === 'skills' && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+      {/* Trading Card Style - Yu-Gi-Oh Format */}
+      {activeSection === 'skills' && hoveredSkill && (
+        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <div
-            className="px-6 py-3 rounded-2xl border border-white/10"
-            style={{ background: 'rgba(10,10,20,0.8)', backdropFilter: 'blur(16px)' }}
+            className="w-80 h-[500px] rounded-2xl relative"
+            style={{
+              animation: 'cardFlipIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transformStyle: 'preserve-3d',
+              backgroundImage: `url('${getSkillCardTemplate(hoveredSkill)}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
           >
-            <p className="text-white/60 text-sm font-light text-center">
-              {hoveredSkill ? (
-                <span className="text-white/90">
-                  {hoveredSkill.name}
-                  <span className="text-white/40 ml-2">— {hoveredSkill.description}</span>
-                </span>
-              ) : (
-                'Haz hover sobre las teclas • Click para más info'
-              )}
-            </p>
-          </div>
-        </div>
-      )}
+            <h1
+              className="absolute left-[34px] right-[34px] text-center uppercase font-black tracking-widest"
+              style={{
+                top: '3.8%',
+                fontSize: '20px',
+                color: 'rgba(200,180,255,0.9)',
+                textShadow: '2px 2px 0 rgba(0,0,0,0.85), 0 0 8px rgba(180,140,255,0.5)',
+              }}
+            >
+              {hoveredSkill.name}
+            </h1>
 
-      {/* Click modal */}
-      {clickedSkill && (
-        <div
-          className="absolute inset-0 z-30 flex items-center justify-center"
-          onClick={() => setClickedSkill(null)}
-        >
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-          <div
-            className="relative z-10 p-8 rounded-3xl border border-white/10 max-w-sm mx-4"
-            style={{ background: 'rgba(15,15,25,0.95)', backdropFilter: 'blur(20px)' }}
-            onClick={(e) => e.stopPropagation()}
-          >
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4"
-              style={{ background: techColors[clickedSkill.id]?.main || '#666' }}
+              className="absolute flex items-center justify-center"
+              style={{
+                left: '15%',
+                right: '15%',
+                top: '13.1%',
+                height: '39%',
+              }}
             >
-              {techIcons[clickedSkill.id] || clickedSkill.icon}
+              <img
+                src={textureMap[hoveredSkill.id]}
+                alt={hoveredSkill.name}
+                className="w-[65%] h-[65%] object-contain"
+                style={{
+                  filter: `
+                    drop-shadow(0 0 16px ${techColors[hoveredSkill.id]?.glow}CC)
+                    drop-shadow(0 0 34px ${techColors[hoveredSkill.id]?.glow}99)
+                    drop-shadow(0 0 8px rgba(0,0,0,0.95))
+                  `,
+                  imageRendering: 'crisp-edges',
+                }}
+              />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">{clickedSkill.name}</h3>
-            <p className="text-white/60 mb-4">{clickedSkill.description}</p>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${clickedSkill.level}%`,
-                    background: `linear-gradient(90deg, ${techColors[clickedSkill.id]?.main}, ${techColors[clickedSkill.id]?.glow})`,
-                  }}
-                />
-              </div>
-              <span className="text-white/80 text-sm">{clickedSkill.level}%</span>
-            </div>
-            <button
-              className="mt-6 w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 transition-colors"
-              onClick={() => setClickedSkill(null)}
+
+            <p
+              className="absolute text-center"
+              style={{
+                left: '17%',
+                right: '17%',
+                top: '64.4%',
+                fontSize: '18px',
+                lineHeight: 1.08,
+                color: 'rgba(205,205,225,0.88)',
+                textShadow: '1px 1px 0 rgba(0,0,0,0.8), 0 0 5px rgba(255,255,255,0.18)',
+              }}
             >
-              Cerrar
-            </button>
+              {hoveredSkill.description}
+            </p>
+
+            <div
+              className="absolute rounded-full font-black"
+              style={{
+                right: '11%',
+                bottom: '8.2%',
+                fontSize: '15px',
+                padding: '4px 12px',
+                color: '#000',
+                background: '#ef5a36',
+                boxShadow: '0 0 14px rgba(239,90,54,0.65)',
+              }}
+            >
+              LV {hoveredSkill.level}
+            </div>
           </div>
         </div>
       )}

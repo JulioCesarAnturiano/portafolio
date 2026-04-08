@@ -43,7 +43,7 @@ function App() {
   }, [activeSection])
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="min-h-screen text-white overflow-x-hidden">
       {/* PERSISTENT 3D KEYBOARD - Always visible, transforms per section */}
       <PersistentKeyboard skills={skills} activeSection={activeSection} />
 
@@ -53,8 +53,8 @@ function App() {
         style={{
           zIndex: 2,
           background: activeSection === 'skills' 
-            ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.2) 100%)'
-            : 'radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
+            ? 'radial-gradient(ellipse at center, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.14) 100%)'
+            : 'radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 100%)',
         }}
       />
       

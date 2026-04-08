@@ -29,12 +29,20 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
 }
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background-color: #020617;
+  background-color: #000000;
+  background-image:
+    radial-gradient(circle at 11% 18%, rgba(255,255,255,0.85) 1px, transparent 2px),
+    radial-gradient(circle at 73% 27%, rgba(255,255,255,0.65) 1px, transparent 2.2px),
+    radial-gradient(circle at 44% 63%, rgba(255,255,255,0.78) 1px, transparent 2px),
+    radial-gradient(circle at 85% 14%, rgba(255,255,255,0.58) 0.9px, transparent 1.8px),
+    radial-gradient(circle at 26% 80%, rgba(255,255,255,0.7) 1px, transparent 2px),
+    radial-gradient(circle at 91% 84%, rgba(255,255,255,0.55) 0.9px, transparent 1.8px);
+  background-attachment: fixed;
   color: #f1f5f9;
   overflow-x: hidden;
 }
@@ -42,7 +50,7 @@ body {
 /* Scroll snap para secciones */
 section {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
 }
 
 /* Selection */
@@ -120,4 +128,40 @@ section {
 /* Container */
 .container-custom {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Trading card animations */
+@keyframes cardFlipIn {
+  0% {
+    transform: perspective(1000px) rotateY(-90deg) translateX(100px);
+    opacity: 0;
+  }
+  50% {
+    transform: perspective(1000px) rotateY(-10deg) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(1000px) rotateY(0deg) translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes holoShine {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
 }
