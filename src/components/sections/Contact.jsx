@@ -34,7 +34,7 @@ const Contact = () => {
   ]
 
   return (
-    <section id="contact" className="relative py-24 overflow-hidden">
+    <section id="contact" className="relative min-h-screen flex items-center py-24 overflow-hidden">
 
       <div className="container-custom relative z-10">
         {/* Left-aligned content to leave space for keyboard on right */}

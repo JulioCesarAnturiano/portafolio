@@ -8,15 +8,17 @@ import About from './components/sections/About'
 import Contact from './components/sections/Contact'
 import PersistentKeyboard from './components/skills/PersistentKeyboard'
 import { skills } from './data/skills'
+import { useFullPageScroll } from './hooks/useFullPageScroll'
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero')
-  const sectionsRef = useRef({})
+  const sections = ['hero', 'skills', 'projects', 'about', 'contact']
+  
+  // Full page scroll like slideshow
+  useFullPageScroll(sections)
 
   // Track active section with improved scroll detection
   useEffect(() => {
-    const sections = ['hero', 'skills', 'projects', 'about', 'contact']
-    
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 3
 

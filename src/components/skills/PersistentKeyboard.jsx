@@ -89,7 +89,7 @@ const keyboardStates = {
   },
   skills: {
     // Centered and closer to camera - immersive view
-    position: [0, -0.3, -1.2],  // Z más cerca de la cámara
+    position: [0, -1.0, -1.2],  // Z más cerca de la cámara
     rotation: [0.5, 0.12, 0],
     scale: 1.8,  // Mayor escala para teclas más grandes
   },

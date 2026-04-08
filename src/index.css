@@ -29,6 +29,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
 }
 
 body {
@@ -36,6 +37,12 @@ body {
   background-color: #020617;
   color: #f1f5f9;
   overflow-x: hidden;
+}
+
+/* Scroll snap para secciones */
+section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* Selection */

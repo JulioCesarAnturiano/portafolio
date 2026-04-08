@@ -11,7 +11,7 @@ const About = () => {
   ]
 
   return (
-    <section id="about" className="relative py-24 overflow-hidden">
+    <section id="about" className="relative min-h-screen flex items-center py-24 overflow-hidden">
 
       <div className="container-custom relative z-10">
         {/* Right-aligned content to leave space for keyboard */}
