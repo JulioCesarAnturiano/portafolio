@@ -128,6 +128,26 @@ const keyboardStates = {
   },
 }
 
+const getSkillsResponsiveState = (viewportWidth) => {
+  if (viewportWidth < 640) {
+    return {
+      position: [0, -1.55, -0.8],
+      rotation: [0.4, 0.08, 0],
+      scale: 0.8,
+    }
+  }
+
+  if (viewportWidth < 1024) {
+    return {
+      position: [0, -1.3, -1.0],
+      rotation: [0.46, 0.1, 0],
+      scale: 1.1,
+    }
+  }
+
+  return keyboardStates.skills
+}
+
 // ============================================
 // LOGO DECAL - 3D texture on top of keycap
 // ============================================
@@ -373,7 +393,13 @@ const KeyboardBase = ({ width, depth }) => {
 // ============================================
 // COMPLETE KEYBOARD ASSEMBLY
 // ============================================
-const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover }) => {
+const SkillKeyboard = ({
+  skills,
+  activeSection,
+  onSkillHover,
+  onSkillUnhover,
+  viewportWidth,
+}) => {
   const keyboardRef = useRef()
   const hasReachedSkills = useRef(false)
   const targetRef = useRef({
@@ -424,7 +450,11 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover }) 
 
   // Update target state based on active section
   useEffect(() => {
-    const state = keyboardStates[activeSection] || keyboardStates.hero
+    const state =
+      activeSection === 'skills'
+        ? getSkillsResponsiveState(viewportWidth)
+        : (keyboardStates[activeSection] || keyboardStates.hero)
+
     targetRef.current.position.set(...state.position)
     targetRef.current.rotation.set(...state.rotation)
     targetRef.current.scale = state.scale
@@ -435,7 +465,7 @@ const SkillKeyboard = ({ skills, activeSection, onSkillHover, onSkillUnhover }) 
     } else {
       hasReachedSkills.current = false
     }
-  }, [activeSection])
+  }, [activeSection, viewportWidth])
 
   // Animate keyboard to target state
   useFrame((state) => {
@@ -531,7 +561,13 @@ const CameraRig = ({ children, activeSection }) => {
 // ============================================
 // MAIN SCENE
 // ============================================
-const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover }) => {
+const KeyboardScene = ({
+  skills,
+  activeSection,
+  onSkillHover,
+  onSkillUnhover,
+  viewportWidth,
+}) => {
   return (
     <>
       {/* Lighting setup - optimized for depth and premium look */}
@@ -571,6 +607,7 @@ const KeyboardScene = ({ skills, activeSection, onSkillHover, onSkillUnhover }) 
           activeSection={activeSection}
           onSkillHover={onSkillHover}
           onSkillUnhover={onSkillUnhover}
+          viewportWidth={viewportWidth}
         />
       </CameraRig>
 
@@ -600,6 +637,23 @@ const Loader = () => (
 // ============================================
 const PersistentKeyboard = ({ skills, activeSection }) => {
   const [hoveredSkill, setHoveredSkill] = useState(null)
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1280
+  )
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth)
+    }
+
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   if (!skills || skills.length === 0) return null
 
@@ -656,9 +710,7 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
-        style={{ touchAction: 'none', pointerEvents: 'auto' }}
-        eventSource={document.documentElement}
-        eventPrefix="client"
+        style={{ touchAction: 'pan-y pinch-zoom', pointerEvents: 'auto' }}
       >
         {/* Fog disabled to keep keyboard sharp in all sections */}
         <Suspense fallback={<Loader />}>
@@ -667,6 +719,7 @@ const PersistentKeyboard = ({ skills, activeSection }) => {
             activeSection={activeSection}
             onSkillHover={setHoveredSkill}
             onSkillUnhover={() => setHoveredSkill(null)}
+            viewportWidth={viewportWidth}
           />
         </Suspense>
       </Canvas>
