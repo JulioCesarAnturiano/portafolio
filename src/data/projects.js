@@ -9,7 +9,8 @@ export const projects = [
     category: "fullstack",
     verified: true,
     github: null,
-    demo: "http://167.114.113.202/",
+    demo: null,
+    apkUrl: "/apk/Alcaldia.apk",
     featured: true,
     highlights: [
       "Real-time ballot monitoring during live elections",
