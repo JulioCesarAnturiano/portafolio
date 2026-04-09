@@ -3,7 +3,7 @@ export const personalInfo = {
   name: "Julio Cesar Anturiano Eulate",
   title: "Full-Stack Developer & Software Engineer",
   subtitle: "Building production-ready systems and competitive programming solutions",
-  description: "Third-year Informatics Engineering student at UMSS with demonstrated experience building and deploying critical production systems for public institutions. ICPC competitor with strong foundations in algorithms, data structures and competitive programming. Self-driven and passionate about Artificial Intelligence, software architecture and real-world impact systems.",
+  description: "Third-year Informatics Engineering student at UMSS with demonstrated experience building and deploying critical production systems for public institutions. ICPC competitor with strong foundations in algorithms, data structures and competitive programming. Self-driven and passionate about Artificial Intelligence, software architecture, mobile apps and real-world impact systems.",
   email: "juliocesaranturianoenlate@gmail.com",
   location: "Cochabamba, Bolivia",
   availability: "Available for internships and freelance projects",
@@ -20,7 +20,7 @@ export const personalInfo = {
   about: {
     paragraphs: [
       "I'm a third-year Informatics Engineering student at Universidad Mayor de San Simón (UMSS) with hands-on experience deploying production systems for government institutions. As an ICPC competitor, I have strong foundations in algorithms, data structures, and problem-solving under pressure.",
-      "My passion lies in building scalable full-stack applications that solve real-world problems. I've worked on critical systems including electoral platforms, municipal transportation apps, and 3D motion capture tools. I'm self-driven and constantly learning new technologies to create impactful solutions.",
+      "My passion lies in building scalable full-stack applications that solve real-world problems. I've worked on critical systems including electoral platforms, municipal transportation apps, a Flutter app for a cooperative electrical field team, and 3D motion capture tools. I'm self-driven and constantly learning new technologies to create impactful solutions.",
       "Beyond coding, I'm deeply interested in Artificial Intelligence, competitive programming, and computer graphics. I enjoy contributing to open-source projects and exploring cutting-edge technologies like LLMs, NLP, and 3D simulation."
     ],
     highlights: [
@@ -36,7 +36,7 @@ export const personalInfo = {
   // Estadísticas
   stats: [
     { label: "University Year", value: "3rd" },
-    { label: "Projects Deployed", value: "6+" },
+    { label: "Projects Deployed", value: "7+" },
     { label: "ICPC Participant", value: "2024" },
     { label: "Technologies", value: "20+" },
   ]

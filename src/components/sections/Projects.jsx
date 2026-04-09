@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Github, ChevronRight } from 'lucide-react'
+import { ExternalLink, Github, ChevronRight, Download, Server } from 'lucide-react'
 import { projects, projectCategories } from '../../data/projects'
 
 const copy = {
@@ -9,15 +9,26 @@ const copy = {
     titleTop: 'Trabajo destacado',
     title: 'Proyectos',
     subtitle: 'Una selección de proyectos que demuestran mis habilidades.',
+    validatedTitle: 'Proyectos con pruebas reales',
+    secondaryTitle: 'Proyectos secundarios',
+    secondarySubtitle: 'Trabajos académicos o exploratorios sin despliegue público actual.',
     moreGithub: 'Ver más en GitHub',
     learnMore: 'Ver detalle',
     detailsTitle: 'Detalle del proyecto',
     highlights: 'Puntos clave',
+    links: 'Enlaces',
     close: 'Cerrar',
+    actionLabels: {
+      github: 'Código',
+      demo: 'Demo',
+      backend: 'Backend',
+      apk: 'APK',
+      download: 'Descarga',
+    },
     projectContent: {
       1: {
-        title: 'Plataforma Electoral RunoH',
-        description: 'Plataforma web en tiempo real para monitoreo de votos y validación de actas electorales desplegada para la elección municipal del 22 de marzo de 2026. Sistema productivo co-desarrollado para operación electoral en vivo con control de acceso por roles.',
+        title: 'Electoral Subnacionales',
+        description: 'Plataforma web para monitoreo de votos y validación de actas desplegada para operaciones de Subnacionales, con control de acceso por roles y demo público.',
         highlights: [
           'Monitoreo de papeletas en tiempo real durante la elección',
           'Acceso por roles (administradores, delegados, supervisores)',
@@ -28,13 +39,24 @@ const copy = {
       },
       2: {
         title: 'ColcaTrufis - Plataforma Municipal de Transporte',
-        description: 'Plataforma full-stack multimodal construida con el Gobierno Autónomo Municipal de Colcapirhua. Incluye app móvil multiplataforma con mapas y geolocalización GPS en tiempo real.',
+        description: 'Plataforma full-stack multimodal construida con el Gobierno Autónomo Municipal de Colcapirhua. Incluye app móvil multiplataforma con mapas y geolocalización GPS en tiempo real, backend desplegado en producción y distribución APK para pruebas de campo.',
         highlights: [
           'Integración de servicios GPS',
           'App móvil multiplataforma (Flutter)',
           'Geolocalización con GeoJSON y Nominatim',
           'APIs REST para datos espaciales',
           'Paneles administrativos para gestión de transporte',
+        ],
+      },
+      8: {
+        title: 'Demo Frontend para Cooperativa Eléctrica',
+        description: 'App móvil Flutter para electricistas de una cooperativa eléctrica. Permite login, rutas, geolocalización de clientes, registro de lecturas, generación de preavisos e impresión Bluetooth sin depender de un backend.',
+        highlights: [
+          'Login de electricistas y visualización de rutas',
+          'Ubicación de clientes en mapa',
+          'Registro de lecturas de medidores',
+          'Generación e impresión de preavisos',
+          'Emparejamiento y reconexión Bluetooth BLE',
         ],
       },
       3: {
@@ -85,11 +107,22 @@ const copy = {
     titleTop: 'Featured work',
     title: 'Projects',
     subtitle: 'A selection of projects that showcase my skills.',
+    validatedTitle: 'Validated projects',
+    secondaryTitle: 'Secondary projects',
+    secondarySubtitle: 'Academic or exploratory work without current public deployment.',
     moreGithub: 'See more on GitHub',
     learnMore: 'View details',
     detailsTitle: 'Project details',
     highlights: 'Highlights',
+    links: 'Links',
     close: 'Close',
+    actionLabels: {
+      github: 'Code',
+      demo: 'Demo',
+      backend: 'Backend',
+      apk: 'APK',
+      download: 'Download',
+    },
   },
 }
 
@@ -105,9 +138,45 @@ const withLocaleProject = (project, lang) => {
   }
 }
 
+const buildProjectLinks = (project, t) => {
+  const links = []
+
+  if (project.github) {
+    links.push({ key: 'github', href: project.github, icon: Github, label: t.actionLabels.github })
+  }
+
+  if (project.demo) {
+    links.push({ key: 'demo', href: project.demo, icon: ExternalLink, label: t.actionLabels.demo })
+  }
+
+  if (project.backendUrl) {
+    links.push({ key: 'backend', href: project.backendUrl, icon: Server, label: t.actionLabels.backend })
+  }
+
+  if (project.apkUrl) {
+    links.push({ key: 'apk', href: project.apkUrl, icon: Download, label: t.actionLabels.apk, download: true })
+  }
+
+  if (Array.isArray(project.downloadFiles)) {
+    project.downloadFiles.forEach((file, index) => {
+      if (!file?.url) return
+      links.push({
+        key: `download-${index}`,
+        href: file.url,
+        icon: Download,
+        label: file.label || `${t.actionLabels.download} ${index + 1}`,
+        download: true,
+      })
+    })
+  }
+
+  return links
+}
+
 const ProjectCard = ({ project, index, lang = 'es', onOpen }) => {
   const t = copy[lang] || copy.es
   const [isHovered, setIsHovered] = useState(false)
+  const actionLinks = buildProjectLinks(project, t)
 
   return (
     <motion.article
@@ -150,37 +219,34 @@ const ProjectCard = ({ project, index, lang = 'es', onOpen }) => {
             </div>
           )}
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-black/80 flex items-center justify-center gap-3"
-          >
-            {project.github && (
-              <motion.a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 bg-white/10 text-white rounded-xl hover:bg-white/20 transition-colors border border-white/20"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Github size={20} />
-              </motion.a>
-            )}
-            {project.demo && (
-              <motion.a
-                href={project.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 bg-white text-black rounded-xl hover:bg-white/90 transition-colors"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <ExternalLink size={20} />
-              </motion.a>
-            )}
-          </motion.div>
+          {actionLinks.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isHovered ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-black/80 flex items-center justify-center gap-3"
+            >
+              {actionLinks.map((link) => {
+                const Icon = link.icon
+                return (
+                  <motion.a
+                    key={link.key}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download={link.download || undefined}
+                    className="p-2.5 bg-white/10 text-white rounded-xl hover:bg-white/20 transition-colors border border-white/20"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label={link.label}
+                    title={link.label}
+                  >
+                    <Icon size={20} />
+                  </motion.a>
+                )
+              })}
+            </motion.div>
+          )}
         </div>
 
         <div className="p-5">
@@ -232,6 +298,8 @@ const Projects = ({ lang = 'es', githubUrl }) => {
   const filteredProjects = activeCategory === 'all'
     ? localizedProjects
     : localizedProjects.filter(project => project.category === activeCategory)
+  const validatedProjects = filteredProjects.filter((project) => project.verified !== false)
+  const secondaryProjects = filteredProjects.filter((project) => project.verified === false)
   const categories =
     lang === 'en'
       ? projectCategories
@@ -239,6 +307,7 @@ const Projects = ({ lang = 'es', githubUrl }) => {
           const names = {
             all: 'Todos',
             fullstack: 'Full Stack',
+            mobile: 'Móvil',
             research: 'Investigación',
             academic: 'Académico',
             game: 'Game Dev',
@@ -315,16 +384,44 @@ const Projects = ({ lang = 'es', githubUrl }) => {
           </motion.div>
 
           {/* Projects Grid */}
-          <motion.div
-            layout
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
-          >
-            <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} lang={lang} onOpen={setSelectedProject} />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <div className="space-y-10">
+            <div>
+              <h3 className="text-xl md:text-2xl font-semibold text-white mb-4 text-center">{t.validatedTitle}</h3>
+              <motion.div
+                layout
+                className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+              >
+                <AnimatePresence mode="popLayout">
+                  {validatedProjects.map((project, index) => (
+                    <ProjectCard key={project.id} project={project} index={index} lang={lang} onOpen={setSelectedProject} />
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+            </div>
+
+            {secondaryProjects.length > 0 && (
+              <div>
+                <h3 className="text-lg md:text-xl font-semibold text-white/90 mb-2 text-center">{t.secondaryTitle}</h3>
+                <p className="text-white/45 text-sm text-center mb-4">{t.secondarySubtitle}</p>
+                <motion.div
+                  layout
+                  className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+                >
+                  <AnimatePresence mode="popLayout">
+                    {secondaryProjects.map((project, index) => (
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        index={index + validatedProjects.length}
+                        lang={lang}
+                        onOpen={setSelectedProject}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
+            )}
+          </div>
 
           {/* View more button */}
           <motion.div
@@ -382,6 +479,32 @@ const Projects = ({ lang = 'es', githubUrl }) => {
               </div>
 
               <p className="text-white/70 mb-5">{selectedProject.description}</p>
+
+              {buildProjectLinks(selectedProject, t).length > 0 && (
+                <div className="mb-5">
+                  <h4 className="text-white font-semibold mb-2">{t.links}</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {buildProjectLinks(selectedProject, t).map((link) => {
+                      const Icon = link.icon
+                      return (
+                        <motion.a
+                          key={link.key}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download={link.download || undefined}
+                          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:text-white hover:border-white/35 hover:bg-white/5 transition-colors text-sm"
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Icon size={16} />
+                          {link.label}
+                        </motion.a>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div className="mb-5">
                 <h4 className="text-white font-semibold mb-2">{t.highlights}</h4>

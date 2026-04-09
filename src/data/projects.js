@@ -2,13 +2,14 @@
 export const projects = [
   {
     id: 1,
-    title: "Electoral RunoH Platform",
-    description: "Real-time web platform for vote monitoring and electoral record validation deployed for the March 22, 2026 Municipal Election. Co-developed production system handling live electoral operations with role-based access control.",
+    title: "Electoral Subnacionales",
+    description: "Web platform for vote monitoring and electoral record validation deployed for Subnacionales operations, with role-based access control and public demo access.",
     image: "/projects/electoral.jpg",
     tags: ["React", "Vite", "Node.js", "Express", "PostgreSQL", "JWT"],
     category: "fullstack",
+    verified: true,
     github: null,
-    demo: null,
+    demo: "http://167.114.113.202/",
     featured: true,
     highlights: [
       "Real-time ballot monitoring during live elections",
@@ -21,12 +22,15 @@ export const projects = [
   {
     id: 2,
     title: "ColcaTrufis - Municipal Transportation Platform",
-    description: "Full-stack multimodal transportation platform built in collaboration with the Autonomous Municipal Government of Colcapirhua. Cross-platform mobile app with integrated mapping capabilities and real-time GPS tracking.",
+    description: "Full-stack multimodal transportation platform built in collaboration with the Autonomous Municipal Government of Colcapirhua. Cross-platform mobile app with integrated mapping capabilities, real-time GPS tracking, deployed backend at https://moviruta.colcapirhua.gob.bo/ and APK distribution for field testing.",
     image: "/projects/colcatrufis.jpg",
     tags: ["Laravel 10", "Flutter", "MySQL", "PHP 8.1", "REST API", "GeoJSON"],
     category: "fullstack",
+    verified: true,
     github: null,
     demo: null,
+    backendUrl: "https://moviruta.colcapirhua.gob.bo/",
+    apkUrl: "/apk/colcaTrufis.apk",
     featured: true,
     highlights: [
       "GPS Location Services integration",
@@ -37,14 +41,46 @@ export const projects = [
     ]
   },
   {
+    id: 8,
+    title: "Cooperativa Eléctrica - Field App Demo",
+    description: "Flutter mobile app demo for electricians in an electrical cooperative. Includes login, routes, client mapping, meter readings, preaviso generation and Bluetooth thermal printing without requiring a backend connection.",
+    image: "/projects/colcatrufis.jpg",
+    tags: ["Flutter", "Dart", "Provider", "Bluetooth BLE", "Geolocator", "ESC/POS"],
+    category: "mobile",
+    verified: true,
+    github: null,
+    demo: null,
+    backendUrl: null,
+    apkUrl: "/apk/ElectricidaCoperativa.apk",
+    featured: false,
+    highlights: [
+      "Electrician login and route viewing",
+      "Client location on map",
+      "Meter reading capture",
+      "Preaviso generation and thermal printing",
+      "Bluetooth printer pairing and reconnect"
+    ]
+  },
+  {
     id: 3,
     title: "Webcam-Based Motion Capture for 3D Animation",
     description: "Markerless motion capture system using webcam and MediaPipe Pose for 3D animation. Applies quaternion mathematics and 3D coordinate transforms for per-bone rotations in Blender, exporting structured JSON animation data without specialized hardware.",
     image: "/projects/mocap.jpg",
     tags: ["Python", "MediaPipe", "OpenCV", "NumPy", "Blender", "Linear Algebra"],
     category: "research",
+    verified: true,
     github: null,
     demo: null,
+    downloadFiles: [
+      {
+        label: "motion_capture.json",
+        url: "/graficacion2/motion_capture.json"
+      },
+      {
+        label: "capture_mocap_backend.py",
+        url: "/graficacion2/capture_mocap_backend.py"
+      }
+    ],
     featured: true,
     highlights: [
       "Markerless motion capture using webcam",
@@ -61,6 +97,7 @@ export const projects = [
     image: "/projects/datastructures.jpg",
     tags: ["Java", "OOP", "Algorithms", "Graph Theory", "Data Structures"],
     category: "academic",
+    verified: false,
     github: null,
     demo: null,
     featured: false,
@@ -78,6 +115,7 @@ export const projects = [
     image: "/projects/nlp-martial.jpg",
     tags: ["PHP", "Laravel", "NLP", "Regex", "SQL Server", "SQLite"],
     category: "fullstack",
+    verified: false,
     github: null,
     demo: null,
     featured: false,
@@ -95,6 +133,7 @@ export const projects = [
     image: "/projects/godot-game.jpg",
     tags: ["Godot 4", "GDScript", "Blender", "Pixel Art", "3D Modelling"],
     category: "game",
+    verified: false,
     github: null,
     demo: null,
     featured: false,
@@ -111,6 +150,7 @@ export const projects = [
 export const projectCategories = [
   { id: "all", name: "All" },
   { id: "fullstack", name: "Full Stack" },
+  { id: "mobile", name: "Mobile" },
   { id: "research", name: "Research" },
   { id: "academic", name: "Academic" },
   { id: "game", name: "Game Dev" },
