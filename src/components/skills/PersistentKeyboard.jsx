@@ -109,21 +109,21 @@ const keyboardStates = {
     scale: 1.8,  // Mayor escala para teclas más grandes
   },
   projects: {
-    // Left side, 90° vertical and -90° horizontal
-    position: [-5.5, 0.2, 1.5],
-    rotation: [1.57, -1.57, 0],  // 90° vertical (X), -90° horizontal (Y)
+    // Left side but kept inside viewport bounds
+    position: [-2.2, 0.1, 4.2],
+    rotation: [0.2, 0.35, 0],
     scale: 1.0,
   },
   about: {
-    // Left side, facing user frontally
-    position: [-3.5, 1, 5.5],
-    rotation: [0.15, 0.3, 0],  // Leve inclinación X, rotación Y para mirar al usuario
+    // Left side, facing user frontally and staying visible
+    position: [-2.1, 0.7, 4.8],
+    rotation: [0.15, 0.25, 0],
     scale: 1.0,
   },
   contact: {
-    // Right side, facing user frontally, closer to camera
-    position: [3.5, 1, 5.5],  // Z ajustado
-    rotation: [0.15, -0.3, 0],  // Leve inclinación X, rotación Y para mirar al usuario
+    // Right side, facing user frontally and staying visible
+    position: [2.1, 0.7, 4.8],
+    rotation: [0.15, -0.25, 0],
     scale: 0.9,  // Ligeramente más pequeño para no competir con el formulario de contacto
   },
 }
