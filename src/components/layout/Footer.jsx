@@ -10,8 +10,20 @@ const socialIcons = {
 }
 
 const copy = {
-  es: { rights: 'Todos los derechos reservados.', madeWith: 'Hecho con', andCoffee: 'y mucho ☕' },
-  en: { rights: 'All rights reserved.', madeWith: 'Made with', andCoffee: 'and lots of ☕' },
+  es: {
+    rights: 'Todos los derechos reservados.',
+    madeWith: 'Hecho con',
+    andCoffee: 'y mucho ☕',
+    loveMedicine: 'Amo la medicina',
+    loveAi: 'Amo la IA',
+  },
+  en: {
+    rights: 'All rights reserved.',
+    madeWith: 'Made with',
+    andCoffee: 'and lots of ☕',
+    loveMedicine: 'I love medicine',
+    loveAi: 'I love AI',
+  },
 }
 
 const Footer = ({ lang = 'es' }) => {
@@ -60,15 +72,19 @@ const Footer = ({ lang = 'es' }) => {
           </div>
 
           {/* Made with love */}
-          <div className="flex items-center gap-2 text-white/40 text-sm">
-            <span>{t.madeWith}</span>
-            <motion.span
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-            >
-              <Heart size={16} className="text-red-500 fill-red-500" />
-            </motion.span>
-            <span>{t.andCoffee}</span>
+          <div className="text-white/40 text-sm text-center md:text-right">
+            <div className="flex items-center justify-center md:justify-end gap-2">
+              <span>{t.madeWith}</span>
+              <motion.span
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              >
+                <Heart size={16} className="text-red-500 fill-red-500" />
+              </motion.span>
+              <span>{t.andCoffee}</span>
+            </div>
+            <p>{t.loveMedicine}</p>
+            <p>{t.loveAi}</p>
           </div>
         </div>
 

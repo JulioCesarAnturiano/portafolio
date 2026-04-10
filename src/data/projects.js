@@ -144,6 +144,25 @@ export const projects = [
       "Pixel art assets",
       "End-to-end interactive experiences"
     ]
+  },
+  {
+    id: 9,
+    title: "AI Symptom-Guidance Chatbot (Healthcare-Oriented Prototype)",
+    description: "Independent healthcare-oriented prototype that uses NLP and LLM concepts to provide approximate symptom guidance with a structured and responsible response flow.",
+    image: "/projects/ai-symptom-chatbot.jpg",
+    tags: ["Python", "NLP", "LLM Concepts", "Database Integration"],
+    category: "research",
+    verified: false,
+    github: null,
+    demo: null,
+    featured: false,
+    highlights: [
+      "Built an AI-based chatbot connected to a database for user-reported symptom guidance",
+      "Designed structured symptom-to-response logic focused on clarity and responsible language",
+      "Applied NLP and LLM concepts to improve user comprehension",
+      "Bridged software engineering with healthcare-oriented problem solving",
+      "Continues evolving through iterative model and logic improvements"
+    ]
   }
 ]
 

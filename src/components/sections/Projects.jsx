@@ -100,6 +100,17 @@ const copy = {
           'Experiencias interactivas end-to-end',
         ],
       },
+      9: {
+        title: 'Chatbot IA de Guía de Síntomas (Prototipo orientado a salud)',
+        description: 'Prototipo independiente orientado al ámbito de salud que aplica conceptos de NLP y LLM para ofrecer guía aproximada de síntomas con respuestas estructuradas y responsables.',
+        highlights: [
+          'Chatbot basado en IA conectado a base de datos para guía de síntomas reportados por usuarios',
+          'Lógica estructurada síntoma-respuesta con foco en claridad y lenguaje responsable',
+          'Aplicación de conceptos NLP y LLM para mejorar la comprensión del usuario',
+          'Integración de ingeniería de software con resolución de problemas del área médica',
+          'Evolución continua mediante mejoras iterativas del modelo y la lógica',
+        ],
+      },
     },
   },
   en: {
